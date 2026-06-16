@@ -17,13 +17,13 @@ import { VehiculeImage } from "@/components/ui/vehicule-image";
 import { urlImageVehicule } from "@/lib/vehicule-image";
 import { PlaqueScanner } from "@/components/immatriculation/plaque-scanner";
 
-/** SUV grand public 2025 affichés en fond de la bannière d'accueil. */
+/** Modèles grand public 2025 affichés en fond de la bannière d'accueil. */
 const SUV_2025 = [
-  { id: "dacia-duster", marque: "Dacia", modele: "Duster" },
+  { id: "renault-clio", marque: "Renault", modele: "Clio" },
+  { id: "toyota-chr", marque: "Toyota", modele: "C-HR" },
   { id: "peugeot-3008", marque: "Peugeot", modele: "3008" },
+  { id: "mazda-cx5", marque: "Mazda", modele: "CX-5" },
   { id: "tesla-model-y", marque: "Tesla", modele: "Model Y" },
-  { id: "renault-austral", marque: "Renault", modele: "Austral" },
-  { id: "volkswagen-tiguan", marque: "Volkswagen", modele: "Tiguan" },
 ];
 
 /** Page d'accueil : proposition de valeur, méthode en 3 étapes, CTA. */

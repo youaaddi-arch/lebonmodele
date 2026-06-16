@@ -40,6 +40,9 @@ const OVERRIDES: Record<string, { make?: string; family: string }> = {
   "renault-scenic-etech": { family: "scenic" },
   "mini-cooper": { make: "mini", family: "cooper" },
   "fiat-500": { make: "fiat", family: "500" },
+  "toyota-chr": { make: "toyota", family: "c-hr" },
+  "mazda-cx5": { make: "mazda", family: "cx-5" },
+  "renault-clio": { make: "renault", family: "clio" },
 };
 
 export interface InfosImageVehicule {
