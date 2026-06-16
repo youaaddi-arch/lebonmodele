@@ -178,6 +178,22 @@ const identiCarAdapter: SourcePlaqueAdapter = {
   },
 };
 
+/**
+ * Diagnostic temporaire : renvoie la réponse brute d'Identi-Car (statut + corps)
+ * pour déboguer le branchement de la source gratuite.
+ */
+export async function diagnostiquerIdentiCar(plaque: string) {
+  const url = new URL(identiCarUrl);
+  url.searchParams.set("plaque", normaliserPlaque(plaque));
+  try {
+    const res = await fetch(url.toString(), { headers: { Accept: "application/json" } });
+    const body = await res.text();
+    return { url: url.toString(), status: res.status, ok: res.ok, body: body.slice(0, 3000) };
+  } catch (e) {
+    return { url: url.toString(), error: String(e) };
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Point d'entrée
 // ---------------------------------------------------------------------------
