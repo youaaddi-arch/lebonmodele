@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 
-import { rechercherFicheVehicule } from "@/lib/immatriculation/adapters";
+import {
+  diagnostiquerIdentiCar,
+  rechercherFicheVehicule,
+} from "@/lib/immatriculation/adapters";
 import { normaliserPlaque } from "@/lib/immatriculation/types";
 
 /**
@@ -13,11 +16,18 @@ export const runtime = "nodejs";
 
 export async function POST(request: Request) {
   let plaque: string | undefined;
+  let debug = false;
   try {
-    const corps = (await request.json()) as { plaque?: string };
+    const corps = (await request.json()) as { plaque?: string; debug?: boolean };
     plaque = corps.plaque;
+    debug = corps.debug === true;
   } catch {
     return NextResponse.json({ erreur: "Requête invalide." }, { status: 400 });
+  }
+
+  // Diagnostic temporaire de la source gratuite Identi-Car.
+  if (debug && plaque) {
+    return NextResponse.json(await diagnostiquerIdentiCar(plaque));
   }
 
   if (!plaque || normaliserPlaque(plaque).length < 5) {
