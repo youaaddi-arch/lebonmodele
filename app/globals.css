@@ -3,44 +3,44 @@
 @tailwind utilities;
 
 /*
- * Design system LeBonModèle — thème SOMBRE premium.
- * Fond bleu nuit profond (peu de blanc), accent violet électrique et cyan,
- * pour un rendu moderne, graphique et « tech ». Couleurs en HSL, pilotées
- * par Tailwind.
+ * Design system LeBonModèle — élégance premium, inspiration automobile haut
+ * de gamme (façon Mercedes-Benz) : monochrome noir / blanc / gris, beaucoup
+ * d'espace, typographie soignée, et un accent (bleu pétrole) employé avec
+ * parcimonie. Couleurs en HSL, pilotées par Tailwind.
  */
 @layer base {
   :root {
-    --background: 240 33% 7%;
-    --foreground: 220 30% 96%;
+    --background: 0 0% 98%;
+    --foreground: 0 0% 8%;
 
-    --card: 240 28% 11%;
-    --card-foreground: 220 30% 96%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 8%;
 
-    --popover: 240 28% 11%;
-    --popover-foreground: 220 30% 96%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 8%;
 
-    /* Violet électrique : accent principal */
-    --primary: 255 92% 68%;
-    --primary-foreground: 240 33% 7%;
+    /* Noir profond : boutons et éléments forts (style premium) */
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 240 22% 17%;
-    --secondary-foreground: 220 30% 96%;
+    --secondary: 0 0% 95%;
+    --secondary-foreground: 0 0% 9%;
 
-    --muted: 240 20% 15%;
-    --muted-foreground: 232 16% 64%;
+    --muted: 0 0% 95%;
+    --muted-foreground: 0 0% 42%;
 
-    /* Cyan : signaux positifs / recommandations */
-    --accent: 180 84% 50%;
-    --accent-foreground: 240 33% 7%;
+    /* Bleu pétrole : accent discret (liens, détails) */
+    --accent: 196 84% 35%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 75% 60%;
+    --destructive: 0 72% 48%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 240 18% 20%;
-    --input: 240 18% 22%;
-    --ring: 255 92% 68%;
+    --border: 0 0% 88%;
+    --input: 0 0% 86%;
+    --ring: 0 0% 9%;
 
-    --radius: 1rem;
+    --radius: 0.5rem;
   }
 }
 
@@ -51,11 +51,6 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-feature-settings: "rlig" 1, "calt" 1;
-    /* Lueurs colorées d'ambiance en fond de page */
-    background-image:
-      radial-gradient(40rem 40rem at 85% -10%, hsl(255 92% 68% / 0.16), transparent 60%),
-      radial-gradient(36rem 36rem at -10% 10%, hsl(180 84% 50% / 0.12), transparent 60%);
-    background-attachment: fixed;
   }
   h1, h2, h3, h4 {
     @apply font-display tracking-tight;
@@ -69,52 +64,18 @@
 }
 
 @layer components {
-  /* Texte en dégradé pour les accroches */
-  .text-gradient {
-    @apply bg-gradient-to-r from-primary via-fuchsia-400 to-accent bg-clip-text text-transparent;
+  /* Petit intitulé en capitales espacées (style éditorial premium) */
+  .eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground;
   }
 
-  /* Carte qui réagit au survol */
+  /* Carte au survol sobre */
   .card-hover {
-    @apply transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-[0_0_40px_-12px_hsl(var(--primary)/0.5)];
+    @apply transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl;
   }
 
-  /* Effet verre dépoli */
-  .glass {
-    @apply border border-white/10 bg-white/[0.04] backdrop-blur-xl;
-  }
-
-  /* Bordure en dégradé (cartes premium) */
-  .gradient-border {
-    position: relative;
-  }
-  .gradient-border::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 1px;
-    background: linear-gradient(135deg, hsl(var(--primary)), transparent 40%, hsl(var(--accent)));
-    -webkit-mask:
-      linear-gradient(#fff 0 0) content-box,
-      linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
-  }
-
-  /* Tache de couleur floutée décorative */
-  .blob {
-    @apply pointer-events-none absolute rounded-full blur-3xl;
-  }
-
-  /* Grille discrète pour les sections héro */
-  .bg-grid {
-    background-image:
-      linear-gradient(to right, hsl(var(--foreground) / 0.05) 1px, transparent 1px),
-      linear-gradient(to bottom, hsl(var(--foreground) / 0.05) 1px, transparent 1px);
-    background-size: 46px 46px;
-    -webkit-mask-image: radial-gradient(ellipse 75% 65% at 50% 0%, #000 55%, transparent 100%);
-    mask-image: radial-gradient(ellipse 75% 65% at 50% 0%, #000 55%, transparent 100%);
+  /* Filet fin pour séparer les sections */
+  .hairline {
+    @apply border-t border-border;
   }
 }

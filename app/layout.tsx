@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Sora } from "next/font/google";
+import { Inter, Archivo } from "next/font/google";
 
 import "./globals.css";
 import { Header } from "@/components/layout/header";
@@ -7,7 +7,7 @@ import { Footer } from "@/components/layout/footer";
 import { CookieBanner } from "@/components/cookie-banner";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
-const sora = Sora({
+const archivo = Archivo({
   subsets: ["latin"],
   variable: "--font-display",
   display: "swap",
@@ -16,11 +16,11 @@ const sora = Sora({
 
 export const metadata: Metadata = {
   title: {
-    default: "LeBonModèle — Trouvez la voiture et le financement faits pour vous",
+    default: "LeBonModèle — Trouvez la bonne voiture, vérifiez avant d'acheter",
     template: "%s · LeBonModèle",
   },
   description:
-    "Conseil neutre et indépendant : répondez à quelques questions et découvrez les modèles de voiture adaptés à votre profil, ainsi que le meilleur mode d'acquisition (comptant, crédit, LOA, LLD).",
+    "Le conseil auto de référence, neutre et indépendant : découvrez quel modèle vous correspond, vérifiez sa fiabilité et ses points faibles, et trouvez le meilleur financement (comptant, crédit, LOA, LLD). En clair, sans jargon.",
   keywords: [
     "conseil achat voiture",
     "quelle voiture choisir",
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" className={`${inter.variable} ${sora.variable}`}>
+    <html lang="fr" className={`${inter.variable} ${archivo.variable}`}>
       <body className="flex min-h-screen flex-col font-sans">
         <Header />
         <main className="flex-1">{children}</main>
