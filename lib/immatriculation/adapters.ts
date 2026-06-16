@@ -151,13 +151,40 @@ const apiPlaqueAdapter: SourcePlaqueAdapter | null = apiKey
     }
   : null;
 
+/**
+ * Source GRATUITE Identi-Car (sans clé ni inscription).
+ * Active par défaut : permet d'interroger n'importe quelle plaque sans payer.
+ * URL surchargeable via `IDENTICAR_API_URL`.
+ */
+const identiCarUrl =
+  process.env.IDENTICAR_API_URL || "https://api-siv.identi-car.fr/v2/lookup";
+
+const identiCarAdapter: SourcePlaqueAdapter = {
+  nom: "identi-car",
+  async rechercher(plaque) {
+    try {
+      const url = new URL(identiCarUrl);
+      url.searchParams.set("plaque", normaliserPlaque(plaque));
+      const res = await fetch(url.toString(), {
+        headers: { Accept: "application/json" },
+        next: { revalidate: 3600 },
+      });
+      if (!res.ok) return null;
+      const json = (await res.json()) as Record<string, unknown>;
+      return mapVersFiche(plaque, json);
+    } catch {
+      return null;
+    }
+  },
+};
+
 // ---------------------------------------------------------------------------
 // Point d'entrée
 // ---------------------------------------------------------------------------
 
 /**
  * Recherche une fiche véhicule à partir d'une plaque.
- * Essaie d'abord la vraie API (si configurée), puis retombe sur la démo.
+ * Ordre : fournisseur payant (si token) → Identi-Car gratuit → démonstration.
  */
 export async function rechercherFicheVehicule(
   plaque: string,
@@ -166,8 +193,12 @@ export async function rechercherFicheVehicule(
     const reelle = await apiPlaqueAdapter.rechercher(plaque);
     if (reelle) return reelle;
   }
+  // Source gratuite (sans clé) : couvre n'importe quelle plaque.
+  const gratuite = await identiCarAdapter.rechercher(plaque);
+  if (gratuite) return gratuite;
+
   return demoAdapter.rechercher(plaque);
 }
 
-/** Indique si une vraie source est configurée (pour l'UI). */
-export const sourceReelleActive = Boolean(apiPlaqueAdapter);
+/** Une source réelle est toujours disponible (payante si token, sinon gratuite). */
+export const sourceReelleActive = true;
