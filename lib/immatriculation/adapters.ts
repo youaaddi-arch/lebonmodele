@@ -71,47 +71,72 @@ function nombre(v: unknown): number | undefined {
   return Number.isFinite(n) ? n : undefined;
 }
 
-/** Mappe une réponse fournisseur (conventions courantes) vers notre fiche. */
-function mapVersFiche(plaque: string, d: Record<string, unknown>): FicheVehicule {
-  const data = (pick<Record<string, unknown>>(d, "data", "vehicule", "result") ?? d) as Record<string, unknown>;
+/**
+ * Mappe une réponse fournisseur vers notre fiche.
+ * Compatible avec apiplaqueimmatriculation.com (clés parfois préfixées « AWN_ »,
+ * données encapsulées dans `data` qui peut être un tableau) et avec d'autres
+ * conventions courantes.
+ */
+function mapVersFiche(plaque: string, json: Record<string, unknown>): FicheVehicule | null {
+  // La donnée peut être dans `data` (tableau ou objet), `vehicule` ou `result`.
+  let racine: Record<string, unknown> = json;
+  const conteneur = pick<unknown>(json, "data", "vehicule", "result");
+  if (Array.isArray(conteneur)) {
+    if (conteneur.length === 0) return null;
+    racine = conteneur[0] as Record<string, unknown>;
+  } else if (conteneur && typeof conteneur === "object") {
+    racine = conteneur as Record<string, unknown>;
+  }
+
+  const marque = pick<string>(racine, "AWN_marque", "marque", "make", "brand");
+  const modele = pick<string>(racine, "AWN_modele", "modele", "model", "famille");
+  if (!marque && !modele) return null; // réponse vide / erreur
+
   return {
     immatriculation: formaterPlaque(plaque),
-    marque: String(pick(data, "marque", "make", "brand") ?? "—"),
-    modele: String(pick(data, "modele", "model", "modele_version", "famille") ?? "—"),
-    annee: nombre(pick(data, "annee", "year", "date_mise_en_circulation_annee")),
-    version: pick<string>(data, "version", "variante"),
-    energie: pick<string>(data, "energie", "energy", "carburant"),
-    critair: pick<string>(data, "critair", "crit_air", "critAir") !== undefined
-      ? String(pick(data, "critair", "crit_air", "critAir"))
-      : undefined,
-    puissanceCh: nombre(pick(data, "puissance_ch", "puissanceCh", "puissance", "power_ch")),
-    coupleNm: nombre(pick(data, "couple", "coupleNm", "torque")),
-    boite: pick<string>(data, "boite", "boite_vitesse", "gearbox", "transmission"),
-    prixNeuf: nombre(pick(data, "prix_neuf", "prixNeuf", "price_new")),
-    acceleration0a100: nombre(pick(data, "acceleration", "zero_to_100", "acceleration_0_100")),
-    vitesseMax: nombre(pick(data, "vitesse_max", "vitesseMax", "top_speed")),
-    vin: pick<string>(data, "vin", "numero_serie"),
-    tvv: pick<string>(data, "tvv", "type_variante_version"),
-    normeEuro: pick<string>(data, "norme_euro", "normeEuro", "euro"),
+    marque: String(marque ?? "—"),
+    modele: String(modele ?? "—"),
+    annee: nombre(pick(racine, "annee", "year", "AWN_date_mise_en_circulation")),
+    version: pick<string>(racine, "AWN_version", "version", "variante"),
+    energie: pick<string>(racine, "AWN_energie", "energie", "energy", "carburant"),
+    critair:
+      pick(racine, "AWN_critair", "critair", "crit_air") !== undefined
+        ? String(pick(racine, "AWN_critair", "critair", "crit_air"))
+        : undefined,
+    puissanceCh: nombre(
+      pick(racine, "AWN_puissance_reelle", "puissance_ch", "puissanceCh", "puissance", "power_ch"),
+    ),
+    coupleNm: nombre(pick(racine, "AWN_couple", "couple", "coupleNm", "torque")),
+    boite: pick<string>(racine, "AWN_boite_vitesse", "boite", "boite_vitesse", "gearbox"),
+    prixNeuf: nombre(pick(racine, "AWN_prix_neuf", "prix_neuf", "prixNeuf", "price_new")),
+    acceleration0a100: nombre(
+      pick(racine, "acceleration", "zero_to_100", "acceleration_0_100"),
+    ),
+    vitesseMax: nombre(pick(racine, "vitesse_max", "vitesseMax", "top_speed")),
+    vin: pick<string>(racine, "AWN_VIN", "vin", "numero_serie"),
+    tvv: pick<string>(racine, "AWN_type_mine", "tvv", "type_mine", "type_variante_version"),
+    normeEuro: pick<string>(racine, "AWN_norme_euro", "norme_euro", "normeEuro", "euro"),
     exemple: false,
   };
 }
 
-const apiUrl = process.env.PLAQUE_API_URL;
+// URL par défaut : fournisseur apiplaqueimmatriculation.com (modifiable via env).
+const apiUrl =
+  process.env.PLAQUE_API_URL || "https://api.apiplaqueimmatriculation.com/plaque";
 const apiKey = process.env.PLAQUE_API_KEY;
 
 const apiPlaqueAdapter: SourcePlaqueAdapter | null = apiKey
   ? {
       nom: "api-plaque",
       async rechercher(plaque) {
-        if (!apiUrl) return null;
         try {
-          // Convention générique : {url}?plaque=XX&token=KEY + en-tête Bearer.
           const url = new URL(apiUrl);
+          url.searchParams.set("immatriculation", formaterPlaque(plaque));
           url.searchParams.set("plaque", normaliserPlaque(plaque));
-          url.searchParams.set("immatriculation", normaliserPlaque(plaque));
           url.searchParams.set("token", apiKey);
+          url.searchParams.set("pays", "FR");
           const res = await fetch(url.toString(), {
+            method: "POST",
             headers: { Authorization: `Bearer ${apiKey}`, "X-API-Key": apiKey },
             // Cache court pour limiter les coûts d'API sur des plaques répétées.
             next: { revalidate: 3600 },
