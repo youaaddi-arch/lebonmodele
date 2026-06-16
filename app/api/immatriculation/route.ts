@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { rechercherFicheVehicule } from "@/lib/immatriculation/adapters";
+import { rechercherFicheVehicule, sourceReelleActive } from "@/lib/immatriculation/adapters";
 import { normaliserPlaque } from "@/lib/immatriculation/types";
 
 /**
@@ -31,11 +31,9 @@ export async function POST(request: Request) {
   if (!fiche) {
     return NextResponse.json(
       {
-        erreur:
-          "Aucune fiche trouvée pour cette plaque. La base de démonstration ne " +
-          "contient que la plaque GW-279-AF. Pour des résultats réels sur toutes " +
-          "les plaques, configurez REGCHECK_USERNAME (compte immatriculationapi.com) " +
-          "ou PLAQUE_API_KEY côté serveur, puis redéployez.",
+        erreur: sourceReelleActive
+          ? "Plaque non reconnue. Vérifiez la saisie (format AA-123-AA, véhicule immatriculé en France) et réessayez."
+          : "Aucune fiche trouvée. Configurez une source de données (REGCHECK_USERNAME) côté serveur pour interroger toutes les plaques.",
       },
       { status: 404 },
     );
