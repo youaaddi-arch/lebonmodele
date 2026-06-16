@@ -185,7 +185,10 @@ const sourceGetAdapter: SourcePlaqueAdapter | null = sourceGetUrl
 // Authentification par NOM D'UTILISATEUR de compte (pas de clé séparée),
 // renseigné via REGCHECK_USERNAME. Réponse XML contenant un bloc vehicleJson.
 
-const regcheckUsername = process.env.REGCHECK_USERNAME;
+// Nom d'utilisateur RegCheck : variable d'env prioritaire, sinon repli intégré.
+// ⚠️ Repli visible si le dépôt est public — déplacez-le en variable d'env et/ou
+// passez le dépôt en privé pour protéger vos crédits.
+const regcheckUsername = process.env.REGCHECK_USERNAME || "Yousra";
 const regcheckUrl =
   process.env.REGCHECK_API_URL || "https://www.regcheck.org.uk/api/reg.asmx/CheckFrance";
 
