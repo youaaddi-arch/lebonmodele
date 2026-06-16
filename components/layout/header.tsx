@@ -7,6 +7,7 @@ import { Logo } from "@/components/brand/logo";
 export function Header() {
   const liens = [
     { href: "/questionnaire", label: "Le questionnaire" },
+    { href: "/immatriculation", label: "Scanner une plaque" },
     { href: "/guides/loa-lld-credit-comptant", label: "Guide financement" },
     { href: "/a-propos", label: "À propos" },
   ];

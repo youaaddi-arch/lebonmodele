@@ -9,9 +9,12 @@ import {
   Sparkles,
 } from "lucide-react";
 
+import { ScanLine } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { VehiculeImage } from "@/components/ui/vehicule-image";
+import { PlaqueScanner } from "@/components/immatriculation/plaque-scanner";
 
 /** Page d'accueil : proposition de valeur, méthode en 3 étapes, CTA. */
 export default function AccueilPage() {
@@ -112,6 +115,41 @@ export default function AccueilPage() {
                 </div>
               </CardContent>
             </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Bannière scanner de plaque : grille en transparence sur fond image */}
+      <section className="relative overflow-hidden bg-foreground text-background">
+        <div
+          className="pointer-events-none absolute inset-0 opacity-20"
+          style={{
+            backgroundImage:
+              "url(https://cdn.imagin.studio/getImage?customer=hrjavascript-mastery&make=peugeot&modelFamily=208&angle=23&zoomType=fullscreen&fileType=png)",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "right center",
+            backgroundSize: "contain",
+          }}
+        />
+        <div className="pointer-events-none absolute inset-0 bg-grid-light opacity-70" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-foreground via-foreground/90 to-transparent" />
+
+        <div className="container relative grid items-center gap-10 py-16 md:py-20 lg:grid-cols-2">
+          <div>
+            <p className="eyebrow flex items-center gap-2 text-background/70">
+              <ScanLine className="h-4 w-4" />
+              Scanner de plaque
+            </p>
+            <h2 className="mt-4 text-3xl font-extrabold md:text-4xl">
+              Déjà une voiture en vue ? Vérifiez-la.
+            </h2>
+            <p className="mt-3 max-w-md text-background/70">
+              Saisissez la plaque : marque, version, énergie, Crit'Air,
+              puissance, performances, VIN… toute la fiche technique en un instant.
+            </p>
+          </div>
+          <div>
+            <PlaqueScanner variante="sombre" />
           </div>
         </div>
       </section>
