@@ -208,8 +208,8 @@ export default function GuideFinancementPage() {
           <CardContent className="flex flex-col items-center gap-4 p-8 text-center">
             <h2 className="text-2xl font-bold">Quel mode est fait pour vous ?</h2>
             <p className="max-w-md text-primary-foreground/80">
-              Notre questionnaire analyse votre profil et vous recommande le mode
-              de financement le plus adapté, chiffres à l'appui.
+              On analyse vos besoins, on vous trouve la voiture idéale et on vous
+              recommande le mode de financement le plus adapté, chiffres à l'appui.
             </p>
             <Button asChild variant="accent" size="lg">
               <Link href="/questionnaire">Obtenir mon conseil personnalisé</Link>

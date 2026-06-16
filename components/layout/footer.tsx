@@ -19,7 +19,7 @@ export function Footer() {
           <div>
             <p className="text-sm font-semibold">Le site</p>
             <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-              <li><Link href="/questionnaire" className="hover:text-foreground">Questionnaire</Link></li>
+              <li><Link href="/questionnaire" className="hover:text-foreground">Trouver ma voiture idéale</Link></li>
               <li><Link href="/guides/loa-lld-credit-comptant" className="hover:text-foreground">Guide financement</Link></li>
               <li><Link href="/a-propos" className="hover:text-foreground">À propos & méthode</Link></li>
             </ul>

@@ -6,7 +6,7 @@ import { Logo } from "@/components/brand/logo";
 /** En-tête de navigation principal, présent sur toutes les pages. */
 export function Header() {
   const liens = [
-    { href: "/questionnaire", label: "Le questionnaire" },
+    { href: "/questionnaire", label: "Ma voiture idéale" },
     { href: "/immatriculation", label: "Scanner une plaque" },
     { href: "/guides/loa-lld-credit-comptant", label: "Guide financement" },
     { href: "/a-propos", label: "À propos" },
@@ -32,7 +32,7 @@ export function Header() {
         </nav>
 
         <Button asChild size="sm">
-          <Link href="/questionnaire">Trouver ma voiture</Link>
+          <Link href="/questionnaire">Trouver ma voiture idéale</Link>
         </Button>
       </div>
     </header>

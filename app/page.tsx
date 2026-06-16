@@ -17,13 +17,13 @@ import { VehiculeImage } from "@/components/ui/vehicule-image";
 import { urlImageVehicule } from "@/lib/vehicule-image";
 import { PlaqueScanner } from "@/components/immatriculation/plaque-scanner";
 
-/** SUV grand public 2025 affichés en fond de la bannière d'accueil. */
+/** Modèles grand public 2025 affichés en fond de la bannière d'accueil. */
 const SUV_2025 = [
-  { id: "dacia-duster", marque: "Dacia", modele: "Duster" },
+  { id: "renault-clio", marque: "Renault", modele: "Clio" },
+  { id: "toyota-chr", marque: "Toyota", modele: "C-HR" },
   { id: "peugeot-3008", marque: "Peugeot", modele: "3008" },
+  { id: "mazda-cx5", marque: "Mazda", modele: "CX-5" },
   { id: "tesla-model-y", marque: "Tesla", modele: "Model Y" },
-  { id: "renault-austral", marque: "Renault", modele: "Austral" },
-  { id: "volkswagen-tiguan", marque: "Volkswagen", modele: "Tiguan" },
 ];
 
 /** Page d'accueil : proposition de valeur, méthode en 3 étapes, CTA. */
@@ -31,34 +31,34 @@ export default function AccueilPage() {
   const etapes = [
     {
       icone: ClipboardList,
-      titre: "Vous répondez",
+      titre: "Vous décrivez vos besoins",
       texte:
-        "Un questionnaire court sur votre budget, vos trajets et vos priorités. Aucune connaissance auto requise.",
+        "Votre budget, vos trajets, le nombre de places, les modèles ou énergies que vous aimez. En quelques clics, sans jargon.",
     },
     {
       icone: Car,
-      titre: "On analyse",
+      titre: "On trouve vos voitures idéales",
       texte:
-        "Notre moteur croise vos réponses avec un catalogue de modèles populaires pour ne garder que ceux faits pour vous.",
+        "Notre moteur croise vos critères avec un catalogue de modèles populaires et ne retient que ceux vraiment faits pour vous.",
     },
     {
       icone: Wallet,
-      titre: "Vous décidez",
+      titre: "Et le bon financement, en bonus",
       texte:
-        "Une short-list de voitures et une comparaison comptant / crédit / LOA / LLD pour choisir sereinement.",
+        "Une fois la voiture trouvée, on vous indique aussi le meilleur mode d'acquisition (comptant, crédit, LOA, LLD).",
     },
   ];
 
   const atouts = [
     {
+      icone: Scale,
+      titre: "La voiture qu'il VOUS faut",
+      texte: "On part de vos besoins et de votre budget, pas d'un catalogue à écouler.",
+    },
+    {
       icone: ShieldCheck,
       titre: "100 % indépendant",
       texte: "Aucun constructeur ne nous mandate. On conseille, on ne vend pas.",
-    },
-    {
-      icone: Scale,
-      titre: "Modèle ET financement",
-      texte: "La seule approche qui répond aux deux vraies questions en même temps.",
     },
     {
       icone: Sparkles,
@@ -92,23 +92,22 @@ export default function AccueilPage() {
           <div className="mx-auto max-w-3xl rounded-2xl border border-white/10 bg-black/45 p-8 text-center shadow-2xl backdrop-blur-md md:p-12">
             <p className="eyebrow flex items-center justify-center gap-2 text-primary">
               <span className="h-px w-8 bg-primary" />
-              Le conseil auto, enfin clair
+              Votre voiture idéale, selon vous
             </p>
             <h1 className="mt-6 text-4xl font-bold leading-[1.05] md:text-6xl">
-              Trouvez la bonne voiture.
+              Trouvez la voiture
               <br />
-              <span className="text-gradient">Vérifiez avant d'acheter.</span>
+              <span className="text-gradient">qu'il vous faut vraiment.</span>
             </h1>
             <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
-              Que vous n'y connaissiez rien ou que vous soyez passionné,
-              LeBonModèle vous dit quel modèle vous correspond, ce qu'il vaut
-              vraiment et comment le financer au mieux — sans jargon, sans rien
-              vous vendre.
+              Dites-nous vos besoins, votre budget et les modèles que vous aimez :
+              on vous trouve les voitures faites pour vous. Et, en bonus, le
+              meilleur moyen de les financer — sans jargon, sans rien vous vendre.
             </p>
             <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
               <Button asChild size="lg">
                 <Link href="/questionnaire">
-                  Trouver ma voiture
+                  Trouver ma voiture idéale
                   <ArrowRight className="h-5 w-5" />
                 </Link>
               </Button>
@@ -301,7 +300,7 @@ export default function AccueilPage() {
             </p>
             <Button asChild size="lg">
               <Link href="/questionnaire">
-                Démarrer le questionnaire
+                Trouver ma voiture idéale
                 <ArrowRight className="h-5 w-5" />
               </Link>
             </Button>

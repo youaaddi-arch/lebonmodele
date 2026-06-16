@@ -52,11 +52,10 @@ export default function ResultatsPage() {
           <CardContent className="p-10">
             <h1 className="text-2xl font-bold">Aucune réponse trouvée</h1>
             <p className="mt-2 text-muted-foreground">
-              Remplissez le questionnaire pour découvrir les modèles et le
-              financement adaptés à votre profil.
+              Décrivez vos besoins pour découvrir les voitures faites pour vous.
             </p>
             <Button asChild className="mt-6">
-              <Link href="/questionnaire">Démarrer le questionnaire</Link>
+              <Link href="/questionnaire">Trouver ma voiture idéale</Link>
             </Button>
           </CardContent>
         </Card>
@@ -128,7 +127,7 @@ export default function ResultatsPage() {
         <Button variant="ghost" asChild>
           <Link href="/questionnaire?etape=0">
             <ArrowLeft className="h-4 w-4" />
-            Refaire le questionnaire
+            Recommencer
           </Link>
         </Button>
       </div>
