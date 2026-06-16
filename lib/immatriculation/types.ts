@@ -22,6 +22,14 @@ export interface FicheVehicule {
   // Performances
   acceleration0a100?: number; // en secondes
   vitesseMax?: number; // km/h
+  // Caractéristiques complémentaires
+  puissanceFiscaleCv?: number;
+  cylindres?: number;
+  co2?: number; // g/km
+  dateMiseCirculation?: string; // JJ/MM/AAAA
+  genre?: string; // ex. VP
+  carrosserie?: string;
+  imageUrl?: string;
   // Divers
   vin?: string;
   tvv?: string;
