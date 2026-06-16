@@ -152,47 +152,32 @@ const apiPlaqueAdapter: SourcePlaqueAdapter | null = apiKey
   : null;
 
 /**
- * Source GRATUITE Identi-Car (sans clé ni inscription).
- * Active par défaut : permet d'interroger n'importe quelle plaque sans payer.
- * URL surchargeable via `IDENTICAR_API_URL`.
+ * Source « générique GET » optionnelle (ex. une API gratuite sans clé), activée
+ * uniquement si `IDENTICAR_API_URL` est défini. Appelle {url}?plaque=XX et mappe
+ * la réponse. Désactivée par défaut (aucune API gratuite fiable connue à ce jour).
  */
-const identiCarUrl =
-  process.env.IDENTICAR_API_URL || "https://api-siv.identi-car.fr/v2/lookup";
+const sourceGetUrl = process.env.IDENTICAR_API_URL;
 
-const identiCarAdapter: SourcePlaqueAdapter = {
-  nom: "identi-car",
-  async rechercher(plaque) {
-    try {
-      const url = new URL(identiCarUrl);
-      url.searchParams.set("plaque", normaliserPlaque(plaque));
-      const res = await fetch(url.toString(), {
-        headers: { Accept: "application/json" },
-        next: { revalidate: 3600 },
-      });
-      if (!res.ok) return null;
-      const json = (await res.json()) as Record<string, unknown>;
-      return mapVersFiche(plaque, json);
-    } catch {
-      return null;
+const sourceGetAdapter: SourcePlaqueAdapter | null = sourceGetUrl
+  ? {
+      nom: "source-get",
+      async rechercher(plaque) {
+        try {
+          const url = new URL(sourceGetUrl);
+          url.searchParams.set("plaque", normaliserPlaque(plaque));
+          const res = await fetch(url.toString(), {
+            headers: { Accept: "application/json" },
+            next: { revalidate: 3600 },
+          });
+          if (!res.ok) return null;
+          const json = (await res.json()) as Record<string, unknown>;
+          return mapVersFiche(plaque, json);
+        } catch {
+          return null;
+        }
+      },
     }
-  },
-};
-
-/**
- * Diagnostic temporaire : renvoie la réponse brute d'Identi-Car (statut + corps)
- * pour déboguer le branchement de la source gratuite.
- */
-export async function diagnostiquerIdentiCar(plaque: string) {
-  const url = new URL(identiCarUrl);
-  url.searchParams.set("plaque", normaliserPlaque(plaque));
-  try {
-    const res = await fetch(url.toString(), { headers: { Accept: "application/json" } });
-    const body = await res.text();
-    return { url: url.toString(), status: res.status, ok: res.ok, body: body.slice(0, 3000) };
-  } catch (e) {
-    return { url: url.toString(), error: String(e) };
-  }
-}
+  : null;
 
 // ---------------------------------------------------------------------------
 // Point d'entrée
@@ -200,7 +185,7 @@ export async function diagnostiquerIdentiCar(plaque: string) {
 
 /**
  * Recherche une fiche véhicule à partir d'une plaque.
- * Ordre : fournisseur payant (si token) → Identi-Car gratuit → démonstration.
+ * Ordre : fournisseur payant (si token) → source GET optionnelle → démonstration.
  */
 export async function rechercherFicheVehicule(
   plaque: string,
@@ -209,12 +194,12 @@ export async function rechercherFicheVehicule(
     const reelle = await apiPlaqueAdapter.rechercher(plaque);
     if (reelle) return reelle;
   }
-  // Source gratuite (sans clé) : couvre n'importe quelle plaque.
-  const gratuite = await identiCarAdapter.rechercher(plaque);
-  if (gratuite) return gratuite;
-
+  if (sourceGetAdapter) {
+    const reelle = await sourceGetAdapter.rechercher(plaque);
+    if (reelle) return reelle;
+  }
   return demoAdapter.rechercher(plaque);
 }
 
-/** Une source réelle est toujours disponible (payante si token, sinon gratuite). */
-export const sourceReelleActive = true;
+/** Indique si une vraie source est configurée (pour l'UI). */
+export const sourceReelleActive = Boolean(apiPlaqueAdapter || sourceGetAdapter);
