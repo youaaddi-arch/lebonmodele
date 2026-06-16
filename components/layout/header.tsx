@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { Car } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { Logo } from "@/components/brand/logo";
 
 /** En-tête de navigation principal, présent sur toutes les pages. */
 export function Header() {
@@ -12,18 +12,13 @@ export function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+    <header className="sticky top-0 z-40 w-full border-b border-white/10 bg-background/70 backdrop-blur-xl">
       <div className="container flex h-16 items-center justify-between">
-        <Link href="/" className="flex items-center gap-2 font-bold text-lg">
-          <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <Car className="h-5 w-5" />
-          </span>
-          <span>
-            LeBon<span className="text-primary">Modèle</span>
-          </span>
+        <Link href="/" aria-label="Accueil LeBonModèle">
+          <Logo />
         </Link>
 
-        <nav className="hidden items-center gap-6 md:flex" aria-label="Navigation principale">
+        <nav className="hidden items-center gap-7 md:flex" aria-label="Navigation principale">
           {liens.map((lien) => (
             <Link
               key={lien.href}

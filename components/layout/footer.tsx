@@ -1,16 +1,16 @@
 import Link from "next/link";
 
+import { Logo } from "@/components/brand/logo";
+
 /** Pied de page : liens légaux et rappel d'indépendance. */
 export function Footer() {
   return (
-    <footer className="border-t bg-secondary/40">
+    <footer className="border-t border-white/10 bg-card/40">
       <div className="container py-10">
         <div className="grid gap-8 md:grid-cols-3">
           <div>
-            <p className="font-bold text-lg">
-              LeBon<span className="text-primary">Modèle</span>
-            </p>
-            <p className="mt-2 max-w-xs text-sm text-muted-foreground">
+            <Logo />
+            <p className="mt-3 max-w-xs text-sm text-muted-foreground">
               Conseil neutre et indépendant pour choisir la voiture qui vous
               correspond et le bon mode de financement. Nous ne vendons rien.
             </p>
