@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ModelCard } from "@/components/resultats/model-card";
 import { ComparateurFinancement } from "@/components/resultats/comparateur-financement";
+import { AnnoncesOccasion } from "@/components/resultats/annonces-occasion";
 import { recommanderModeles } from "@/lib/scoring";
 import { calculerFinancement } from "@/lib/financement";
 import { lireProfilStocke } from "@/lib/questionnaire-store";
@@ -108,6 +109,16 @@ export default function ResultatsPage() {
             .
           </p>
           <ComparateurFinancement comparatif={comparatif} />
+        </section>
+      ) : null}
+
+      {/* Occasions repérées pour le meilleur modèle */}
+      {recos[0] ? (
+        <section className="mt-12">
+          <AnnoncesOccasion
+            vehiculeId={recos[0].vehicule.id}
+            titreModele={`${recos[0].vehicule.marque} ${recos[0].vehicule.modele}`}
+          />
         </section>
       ) : null}
 
