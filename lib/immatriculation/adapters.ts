@@ -284,8 +284,10 @@ function mapRegCheck(plaque: string, vehicleJson: Record<string, unknown>): Fich
       s(vehicleJson.RegistrationDate),
     ),
     genre: s(ed.genre),
-    carrosserie: champTexte(vehicleJson.BodyStyle) || undefined,
-    imageUrl: s(vehicleJson.ImageUrl),
+    // BodyStyle renvoie souvent un code peu lisible (ex. "BE5") : on l'ignore.
+    carrosserie: undefined,
+    // Forcer https : un site sécurisé bloque les images http (contenu mixte).
+    imageUrl: s(vehicleJson.ImageUrl)?.replace(/^http:\/\//, "https://"),
     vin: s(ed.numSerieMoteur),
     tvv: s(ed.CNIT),
     normeEuro: undefined,
