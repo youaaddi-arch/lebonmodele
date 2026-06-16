@@ -56,12 +56,12 @@ export default function ImmatriculationPage() {
       <section className="container py-16 text-center">
         <h2 className="text-2xl font-bold">Vous cherchez plutôt quelle voiture acheter ?</h2>
         <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
-          Notre questionnaire vous recommande les modèles faits pour vous et le
-          meilleur mode de financement.
+          Dites-nous vos besoins et votre budget : on vous trouve les voitures
+          idéales pour vous (et le meilleur financement, en bonus).
         </p>
         <Button asChild size="lg" className="mt-6">
           <Link href="/questionnaire">
-            Trouver ma voiture
+            Trouver ma voiture idéale
             <ArrowRight className="h-5 w-5" />
           </Link>
         </Button>

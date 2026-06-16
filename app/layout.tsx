@@ -16,11 +16,11 @@ const spaceGrotesk = Space_Grotesk({
 
 export const metadata: Metadata = {
   title: {
-    default: "LeBonModèle — Trouvez la bonne voiture, vérifiez avant d'acheter",
+    default: "LeBonModèle — La voiture idéale selon vos besoins",
     template: "%s · LeBonModèle",
   },
   description:
-    "Le conseil auto de référence, neutre et indépendant : découvrez quel modèle vous correspond, vérifiez sa fiabilité et ses points faibles, et trouvez le meilleur financement (comptant, crédit, LOA, LLD). En clair, sans jargon.",
+    "Dites-nous vos besoins, votre budget et les modèles que vous aimez : LeBonModèle vous trouve les voitures faites pour vous, en toute indépendance. En bonus, le meilleur mode de financement (comptant, crédit, LOA, LLD).",
   keywords: [
     "conseil achat voiture",
     "quelle voiture choisir",

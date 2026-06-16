@@ -62,7 +62,7 @@ export default function AProposPage() {
         <section className="space-y-4">
           <h2 className="text-2xl font-bold">Notre méthode</h2>
           <p className="text-muted-foreground">
-            Vos réponses au questionnaire sont croisées avec un catalogue de
+            Les besoins que vous décrivez sont croisés avec un catalogue de
             modèles populaires sur le marché français. Chaque modèle reçoit un
             score d'adéquation calculé à partir de vos contraintes (budget,
             nombre de places, énergie, recharge…) et de la pondération de vos
