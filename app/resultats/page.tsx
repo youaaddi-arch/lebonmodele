@@ -3,13 +3,14 @@
 import * as React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Pencil, Sparkles } from "lucide-react";
+import { ArrowLeft, Pencil } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ModelCard } from "@/components/resultats/model-card";
 import { ComparateurFinancement } from "@/components/resultats/comparateur-financement";
 import { AnnoncesOccasion } from "@/components/resultats/annonces-occasion";
+import { AgentDecision } from "@/components/resultats/agent-decision";
 import { recommanderModeles } from "@/lib/scoring";
 import { calculerFinancement } from "@/lib/financement";
 import { lireProfilStocke } from "@/lib/questionnaire-store";
@@ -83,8 +84,8 @@ export default function ResultatsPage() {
         </Button>
       </div>
 
-      {/* Résumé IA optionnel (dégradé proprement sans clé API) */}
-      <ResumeIA profil={profil} recos={recos} />
+      {/* Décision de l'agent LangGraph (dégrade proprement sans clé IA) */}
+      <AgentDecision profil={profil} />
 
       {/* Modèles recommandés */}
       <section className="mt-8">
@@ -117,7 +118,8 @@ export default function ResultatsPage() {
         <section className="mt-12">
           <AnnoncesOccasion
             vehiculeId={recos[0].vehicule.id}
-            titreModele={`${recos[0].vehicule.marque} ${recos[0].vehicule.modele}`}
+            marque={recos[0].vehicule.marque}
+            modele={recos[0].vehicule.modele}
           />
         </section>
       ) : null}
@@ -131,66 +133,5 @@ export default function ResultatsPage() {
         </Button>
       </div>
     </div>
-  );
-}
-
-/**
- * Bloc « résumé personnalisé ». Tente d'appeler la route IA ; si la clé API
- * n'est pas configurée (réponse 503), on n'affiche tout simplement rien :
- * le site reste pleinement fonctionnel sans IA.
- */
-function ResumeIA({
-  profil,
-  recos,
-}: {
-  profil: ProfilUtilisateur;
-  recos: RecommandationModele[];
-}) {
-  const [resume, setResume] = React.useState<string | null>(null);
-  const [chargement, setChargement] = React.useState(false);
-  const dejaAppele = React.useRef(false);
-
-  React.useEffect(() => {
-    if (!recos.length || dejaAppele.current) return;
-    dejaAppele.current = true;
-    setChargement(true);
-
-    fetch("/api/recommander", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        profil,
-        modeles: recos.map((r) => ({
-          nom: `${r.vehicule.marque} ${r.vehicule.modele}`,
-          score: r.score,
-        })),
-      }),
-    })
-      .then(async (res) => {
-        if (!res.ok) return null;
-        const data = await res.json();
-        return data.resume as string | undefined;
-      })
-      .then((r) => setResume(r ?? null))
-      .catch(() => setResume(null))
-      .finally(() => setChargement(false));
-  }, [profil, recos]);
-
-  if (!chargement && !resume) return null;
-
-  return (
-    <Card className="border-primary/30 bg-primary/5">
-      <CardContent className="flex items-start gap-3 p-5">
-        <Sparkles className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
-        <div>
-          <p className="font-semibold">Votre synthèse personnalisée</p>
-          {chargement ? (
-            <p className="mt-1 text-sm text-muted-foreground">Rédaction de votre conseil sur mesure…</p>
-          ) : (
-            <p className="mt-1 whitespace-pre-line text-sm text-muted-foreground">{resume}</p>
-          )}
-        </div>
-      </CardContent>
-    </Card>
   );
 }
