@@ -1,10 +1,11 @@
 "use client";
 
 import * as React from "react";
-import { Gauge, Info, MapPin } from "lucide-react";
+import { Gauge, Info, MapPin, ExternalLink } from "lucide-react";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { formatEuros } from "@/lib/utils";
 import type { AnnonceOccasion, SourceAnnonce } from "@/lib/annonces/types";
 
@@ -13,18 +14,33 @@ const SOURCE_LABEL: Record<SourceAnnonce, string> = {
   lacentrale: "Réseau pro",
 };
 
+/** Construit l'URL de recherche Leboncoin (catégorie voitures) pour un modèle. */
+function urlLeboncoin(marque: string, modele: string): string {
+  const texte = encodeURIComponent(`${marque} ${modele}`);
+  return `https://www.leboncoin.fr/recherche?category=2&text=${texte}`;
+}
+
+/** Construit l'URL de recherche La Centrale pour un modèle. */
+function urlLaCentrale(marque: string, modele: string): string {
+  const param = encodeURIComponent(`${marque.toUpperCase()}:${modele}`);
+  return `https://www.lacentrale.fr/listing?makesModelsCommercialNames=${param}`;
+}
+
 /**
  * Bloc « occasions repérées » pour un modèle.
- * Interroge la route serveur /api/annonces. Les annonces affichées sont des
- * exemples indicatifs (aucun lien sortant : la mise en relation réelle serait
- * un service payant à brancher ultérieurement).
+ * - Boutons : recherche RÉELLE pré-remplie sur Leboncoin et La Centrale
+ *   (liens directs, sans scraping — conforme à leurs conditions).
+ * - Cartes : exemples indicatifs cohérents avec la cote (illustration du marché),
+ *   issus de /api/annonces.
  */
 export function AnnoncesOccasion({
   vehiculeId,
-  titreModele,
+  marque,
+  modele,
 }: {
   vehiculeId: string;
-  titreModele: string;
+  marque: string;
+  modele: string;
 }) {
   const [annonces, setAnnonces] = React.useState<AnnonceOccasion[] | null>(null);
   const [chargement, setChargement] = React.useState(true);
@@ -48,20 +64,35 @@ export function AnnoncesOccasion({
     };
   }, [vehiculeId]);
 
-  if (!chargement && (!annonces || annonces.length === 0)) return null;
-
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       <div>
         <h3 className="font-display text-xl font-bold">
-          Occasions repérées · {titreModele}
+          Occasions similaires · {marque} {modele}
         </h3>
         <p className="text-sm text-muted-foreground">
-          Un aperçu du marché de l'occasion pour ce modèle, agrégé depuis
-          plusieurs places de marché.
+          Voyez les annonces réelles de ce modèle en un clic, et un aperçu des
+          niveaux de prix du marché.
         </p>
       </div>
 
+      {/* Accès réels aux places de marché (liens pré-remplis) */}
+      <div className="flex flex-wrap gap-3">
+        <Button asChild variant="outline">
+          <a href={urlLeboncoin(marque, modele)} target="_blank" rel="noopener noreferrer">
+            Voir sur Leboncoin
+            <ExternalLink className="h-4 w-4" />
+          </a>
+        </Button>
+        <Button asChild variant="outline">
+          <a href={urlLaCentrale(marque, modele)} target="_blank" rel="noopener noreferrer">
+            Voir sur La Centrale
+            <ExternalLink className="h-4 w-4" />
+          </a>
+        </Button>
+      </div>
+
+      {/* Aperçu indicatif des prix */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {chargement
           ? Array.from({ length: 3 }).map((_, i) => (
@@ -106,9 +137,9 @@ export function AnnoncesOccasion({
 
       <p className="flex items-start gap-2 rounded-md bg-secondary/50 p-3 text-xs text-muted-foreground">
         <Info className="mt-0.5 h-4 w-4 shrink-0" />
-        Exemples indicatifs générés à partir de la cote du modèle, destinés à
-        illustrer le marché. La mise en relation avec de vraies annonces sera
-        proposée ultérieurement via nos partenaires.
+        Les boutons ouvrent une recherche réelle pré-remplie sur Leboncoin et La
+        Centrale. Les cartes ci-dessus sont des repères de prix indicatifs (cote
+        du modèle), pas des annonces réelles.
       </p>
     </div>
   );

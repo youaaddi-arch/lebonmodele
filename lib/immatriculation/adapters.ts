@@ -180,6 +180,94 @@ const sourceGetAdapter: SourcePlaqueAdapter | null = sourceGetUrl
   : null;
 
 // ---------------------------------------------------------------------------
+// Fournisseur RegCheck (immatriculationapi.com / regcheck.org.uk)
+// ---------------------------------------------------------------------------
+// Authentification par NOM D'UTILISATEUR de compte (pas de clé séparée),
+// renseigné via REGCHECK_USERNAME. Réponse XML contenant un bloc vehicleJson.
+
+const regcheckUsername = process.env.REGCHECK_USERNAME;
+const regcheckUrl =
+  process.env.REGCHECK_API_URL || "https://www.regcheck.org.uk/api/reg.asmx/CheckFrance";
+
+function titre(v?: string): string | undefined {
+  if (!v) return undefined;
+  const s = v.toLowerCase();
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
+function mapperBoite(code?: string): string | undefined {
+  if (!code) return undefined;
+  const c = code.toUpperCase();
+  if (c.startsWith("M")) return "Manuelle";
+  if (c.startsWith("A")) return "Automatique";
+  return code;
+}
+
+/** Convertit une puissance en kW vers des chevaux DIN (ch). */
+function kwVersCh(kw?: string | number): number | undefined {
+  const n = nombre(kw);
+  return n ? Math.round(n * 1.35962) : undefined;
+}
+
+function mapRegCheck(plaque: string, vehicleJson: Record<string, unknown>): FicheVehicule | null {
+  const ed = (vehicleJson.ExtendedData ?? {}) as Record<string, unknown>;
+  const champTexte = (o: unknown): string | undefined => {
+    if (o && typeof o === "object" && "CurrentTextValue" in o) {
+      const v = (o as { CurrentTextValue: unknown }).CurrentTextValue;
+      return v ? String(v) : undefined;
+    }
+    return undefined;
+  };
+
+  const marque = (ed.marque as string) || champTexte(vehicleJson.CarMake);
+  const modele =
+    (ed.libelleModele as string) || (ed.modele as string) || champTexte(vehicleJson.CarModel);
+  if (!marque && !modele) return null;
+
+  return {
+    immatriculation: formaterPlaque(plaque),
+    marque: String(marque ?? "—"),
+    modele: String(modele ?? "—"),
+    annee: nombre((vehicleJson.RegistrationYear as string) || (ed.anneeSortie as string)),
+    version: (ed.libVersion as string) || (ed.version as string) || undefined,
+    energie: titre(champTexte(vehicleJson.FuelType) || (ed.carburantVersion as string)),
+    critair: undefined,
+    puissanceCh: kwVersCh(ed.puissanceDyn as string),
+    coupleNm: undefined,
+    boite: mapperBoite((ed.boiteDeVitesse as string) || champTexte(vehicleJson.Transmission)),
+    prixNeuf: nombre(ed.valeurANeufSRA as string) || undefined,
+    acceleration0a100: undefined,
+    vitesseMax: undefined,
+    vin: (ed.numSerieMoteur as string) || undefined,
+    tvv: (ed.CNIT as string) || undefined,
+    normeEuro: undefined,
+    exemple: false,
+  };
+}
+
+const regcheckAdapter: SourcePlaqueAdapter | null = regcheckUsername
+  ? {
+      nom: "regcheck",
+      async rechercher(plaque) {
+        try {
+          const url = new URL(regcheckUrl);
+          url.searchParams.set("RegistrationNumber", normaliserPlaque(plaque));
+          url.searchParams.set("username", regcheckUsername);
+          const res = await fetch(url.toString(), { next: { revalidate: 86400 } });
+          if (!res.ok) return null;
+          const xml = await res.text();
+          const m = xml.match(/<vehicleJson>([\s\S]*?)<\/vehicleJson>/);
+          if (!m) return null;
+          const data = JSON.parse(m[1]) as Record<string, unknown>;
+          return mapRegCheck(plaque, data);
+        } catch {
+          return null;
+        }
+      },
+    }
+  : null;
+
+// ---------------------------------------------------------------------------
 // Point d'entrée
 // ---------------------------------------------------------------------------
 
@@ -194,6 +282,10 @@ export async function rechercherFicheVehicule(
     const reelle = await apiPlaqueAdapter.rechercher(plaque);
     if (reelle) return reelle;
   }
+  if (regcheckAdapter) {
+    const reelle = await regcheckAdapter.rechercher(plaque);
+    if (reelle) return reelle;
+  }
   if (sourceGetAdapter) {
     const reelle = await sourceGetAdapter.rechercher(plaque);
     if (reelle) return reelle;
@@ -202,4 +294,6 @@ export async function rechercherFicheVehicule(
 }
 
 /** Indique si une vraie source est configurée (pour l'UI). */
-export const sourceReelleActive = Boolean(apiPlaqueAdapter || sourceGetAdapter);
+export const sourceReelleActive = Boolean(
+  apiPlaqueAdapter || regcheckAdapter || sourceGetAdapter,
+);
