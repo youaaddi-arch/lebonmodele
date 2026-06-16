@@ -4,9 +4,9 @@
 
 /*
  * Design system LeBonModèle.
- * Identité moderne, épurée, rassurante : fond clair, bleu profond comme
- * couleur d'accent (confiance), vert d'appoint pour les éléments positifs.
- * Toutes les couleurs sont en HSL pour rester pilotables par Tailwind.
+ * Identité moderne, premium et rassurante : fond très clair légèrement bleuté,
+ * bleu profond comme couleur d'accent (confiance), vert émeraude pour les
+ * signaux positifs. Toutes les couleurs sont en HSL, pilotables par Tailwind.
  */
 @layer base {
   :root {
@@ -20,27 +20,27 @@
     --popover-foreground: 222 47% 11%;
 
     /* Bleu profond : couleur d'accent principale */
-    --primary: 214 80% 36%;
+    --primary: 221 83% 45%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 40% 96%;
+    --secondary: 214 32% 95%;
     --secondary-foreground: 222 47% 11%;
 
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%;
+    --muted: 214 32% 95%;
+    --muted-foreground: 215 16% 42%;
 
-    /* Vert d'appoint pour les signaux positifs (recommandation, validation) */
-    --accent: 160 60% 38%;
+    /* Vert émeraude pour les signaux positifs (recommandation, validation) */
+    --accent: 158 64% 38%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 214 20% 88%;
-    --input: 214 20% 88%;
-    --ring: 214 80% 36%;
+    --border: 214 25% 89%;
+    --input: 214 25% 89%;
+    --ring: 221 83% 45%;
 
-    --radius: 0.75rem;
+    --radius: 1rem;
   }
 }
 
@@ -52,11 +52,36 @@
     @apply bg-background text-foreground antialiased;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
+  h1, h2, h3, h4 {
+    @apply font-display tracking-tight;
+  }
 }
 
 /* Amélioration de l'accessibilité du focus clavier */
 @layer base {
   :focus-visible {
     @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+}
+
+@layer components {
+  /* Texte en dégradé pour les accroches */
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent;
+  }
+
+  /* Carte qui réagit subtilement au survol */
+  .card-hover {
+    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-lg;
+  }
+
+  /* Fond en grille discrète pour les sections héro */
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, hsl(var(--border) / 0.6) 1px, transparent 1px),
+      linear-gradient(to bottom, hsl(var(--border) / 0.6) 1px, transparent 1px);
+    background-size: 48px 48px;
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 60%, transparent 100%);
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 60%, transparent 100%);
   }
 }

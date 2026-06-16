@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Sora } from "next/font/google";
 
 import "./globals.css";
 import { Header } from "@/components/layout/header";
@@ -7,6 +7,12 @@ import { Footer } from "@/components/layout/footer";
 import { CookieBanner } from "@/components/cookie-banner";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
+const sora = Sora({
+  subsets: ["latin"],
+  variable: "--font-display",
+  display: "swap",
+  weight: ["600", "700", "800"],
+});
 
 export const metadata: Metadata = {
   title: {
@@ -32,7 +38,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" className={inter.variable}>
+    <html lang="fr" className={`${inter.variable} ${sora.variable}`}>
       <body className="flex min-h-screen flex-col font-sans">
         <Header />
         <main className="flex-1">{children}</main>

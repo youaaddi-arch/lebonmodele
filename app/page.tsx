@@ -11,6 +11,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { VehiculeImage } from "@/components/ui/vehicule-image";
 
 /** Page d'accueil : proposition de valeur, méthode en 3 étapes, CTA. */
 export default function AccueilPage() {
@@ -57,24 +58,26 @@ export default function AccueilPage() {
     <>
       {/* Section héro */}
       <section className="relative overflow-hidden border-b">
-        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-primary/5 to-transparent" />
-        <div className="container py-20 md:py-28">
-          <div className="mx-auto max-w-3xl text-center">
-            <span className="inline-flex items-center gap-2 rounded-full border bg-card px-4 py-1.5 text-sm font-medium text-muted-foreground">
+        <div className="absolute inset-0 -z-10 bg-grid" />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-primary/[0.07] via-transparent to-transparent" />
+        <div className="container grid items-center gap-12 py-16 md:py-24 lg:grid-cols-2">
+          {/* Colonne texte */}
+          <div className="text-center lg:text-left">
+            <span className="inline-flex items-center gap-2 rounded-full border bg-card px-4 py-1.5 text-sm font-medium text-muted-foreground shadow-sm">
               <ShieldCheck className="h-4 w-4 text-accent" />
               Conseil neutre et indépendant
             </span>
-            <h1 className="mt-6 text-4xl font-bold tracking-tight md:text-6xl">
+            <h1 className="mt-6 text-4xl font-extrabold md:text-6xl">
               La voiture parfaite pour vous,
               <br />
-              <span className="text-primary">et le bon financement.</span>
+              <span className="text-gradient">et le bon financement.</span>
             </h1>
-            <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground">
+            <p className="mx-auto mt-6 max-w-xl text-lg text-muted-foreground lg:mx-0">
               Choisir un modèle et décider entre comptant, crédit, LOA ou LLD,
               c'est compliqué. On vous guide pas à pas, sans rien vous vendre,
               pour trouver la solution réellement adaptée à votre situation.
             </p>
-            <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row lg:justify-start">
               <Button asChild size="lg">
                 <Link href="/questionnaire">
                   Trouver ma voiture
@@ -90,6 +93,28 @@ export default function AccueilPage() {
             <p className="mt-4 text-sm text-muted-foreground">
               Gratuit · Sans engagement · Environ 3 minutes
             </p>
+          </div>
+
+          {/* Colonne visuel : voiture mise en avant */}
+          <div className="group relative">
+            <div className="absolute -inset-4 -z-10 rounded-[2rem] bg-gradient-to-tr from-primary/10 via-accent/10 to-transparent blur-2xl" />
+            <Card className="overflow-hidden border-none shadow-xl">
+              <VehiculeImage
+                vehicule={{ id: "peugeot-3008", marque: "Peugeot", modele: "3008" }}
+                alt="Exemple de modèle recommandé"
+                className="aspect-[4/3] w-full"
+              />
+              <CardContent className="flex items-center justify-between p-5">
+                <div>
+                  <p className="text-sm text-muted-foreground">Exemple de recommandation</p>
+                  <p className="font-display text-lg font-semibold">Peugeot 3008 · Hybride</p>
+                </div>
+                <span className="flex h-14 w-14 flex-col items-center justify-center rounded-full bg-accent/10 text-accent">
+                  <span className="text-lg font-bold">94</span>
+                  <span className="text-[9px] uppercase">/100</span>
+                </span>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>

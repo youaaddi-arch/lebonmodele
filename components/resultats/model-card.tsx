@@ -2,6 +2,7 @@ import { Check, X } from "lucide-react";
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { VehiculeImage } from "@/components/ui/vehicule-image";
 import { formatEuros } from "@/lib/utils";
 import type { Energie, RecommandationModele } from "@/lib/types";
 
@@ -24,31 +25,34 @@ export function ModelCard({
   const { vehicule, score, pourquoi, energieConseillee, prixIndicatif } = reco;
 
   return (
-    <Card className="flex h-full flex-col">
-      <CardHeader>
-        <div className="flex items-start justify-between gap-3">
-          <div>
-            {rang === 1 ? (
-              <Badge variant="accent" className="mb-2">
-                Notre meilleure adéquation
-              </Badge>
-            ) : null}
-            <h3 className="text-xl font-bold">
-              {vehicule.marque} {vehicule.modele}
-            </h3>
-            <p className="text-sm text-muted-foreground capitalize">
-              {vehicule.carrosserie} · {ENERGIE_LABEL[energieConseillee]} ·{" "}
-              {vehicule.places} places
-            </p>
-          </div>
-          <div className="shrink-0 text-center">
-            <div className="flex h-16 w-16 flex-col items-center justify-center rounded-full bg-primary/10 text-primary">
-              <span className="text-xl font-bold">{score}</span>
-              <span className="text-[10px] uppercase tracking-wide">/ 100</span>
-            </div>
-            <span className="mt-1 block text-[11px] text-muted-foreground">Adéquation</span>
-          </div>
+    <Card className="group flex h-full flex-col overflow-hidden card-hover">
+      {/* Photo du modèle */}
+      <div className="relative">
+        <VehiculeImage
+          vehicule={{ id: vehicule.id, marque: vehicule.marque, modele: vehicule.modele }}
+          alt={`${vehicule.marque} ${vehicule.modele}`}
+          className="aspect-[16/10] w-full border-b"
+        />
+        {rang === 1 ? (
+          <Badge variant="accent" className="absolute left-3 top-3 shadow-sm">
+            Notre meilleure adéquation
+          </Badge>
+        ) : null}
+        {/* Pastille de score */}
+        <div className="absolute right-3 top-3 flex h-14 w-14 flex-col items-center justify-center rounded-full bg-card/90 text-primary shadow-md backdrop-blur">
+          <span className="text-lg font-bold leading-none">{score}</span>
+          <span className="text-[9px] uppercase tracking-wide text-muted-foreground">/100</span>
         </div>
+      </div>
+
+      <CardHeader>
+        <h3 className="font-display text-xl font-bold">
+          {vehicule.marque} {vehicule.modele}
+        </h3>
+        <p className="text-sm text-muted-foreground capitalize">
+          {vehicule.carrosserie} · {ENERGIE_LABEL[energieConseillee]} ·{" "}
+          {vehicule.places} places
+        </p>
       </CardHeader>
 
       <CardContent className="flex flex-1 flex-col gap-4">
