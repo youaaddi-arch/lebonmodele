@@ -5,7 +5,7 @@ import { Logo } from "@/components/brand/logo";
 /** Pied de page : liens légaux et rappel d'indépendance. */
 export function Footer() {
   return (
-    <footer className="border-t border-white/10 bg-card/40">
+    <footer className="border-t border-border bg-secondary/40">
       <div className="container py-10">
         <div className="grid gap-8 md:grid-cols-3">
           <div>
