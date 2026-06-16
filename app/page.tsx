@@ -57,9 +57,10 @@ export default function AccueilPage() {
   return (
     <>
       {/* Section héro */}
-      <section className="relative overflow-hidden border-b">
+      <section className="relative overflow-hidden border-b border-white/10">
         <div className="absolute inset-0 -z-10 bg-grid" />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-primary/[0.07] via-transparent to-transparent" />
+        <div className="blob -left-20 top-0 h-72 w-72 bg-primary/30" />
+        <div className="blob right-0 top-32 h-80 w-80 bg-accent/20" />
         <div className="container grid items-center gap-12 py-16 md:py-24 lg:grid-cols-2">
           {/* Colonne texte */}
           <div className="text-center lg:text-left">
@@ -97,8 +98,8 @@ export default function AccueilPage() {
 
           {/* Colonne visuel : voiture mise en avant */}
           <div className="group relative">
-            <div className="absolute -inset-4 -z-10 rounded-[2rem] bg-gradient-to-tr from-primary/10 via-accent/10 to-transparent blur-2xl" />
-            <Card className="overflow-hidden border-none shadow-xl">
+            <div className="absolute -inset-6 -z-10 rounded-[2.5rem] bg-gradient-to-tr from-primary/30 via-accent/20 to-transparent blur-3xl" />
+            <Card className="gradient-border overflow-hidden border-none shadow-2xl">
               <VehiculeImage
                 vehicule={{ id: "peugeot-3008", marque: "Peugeot", modele: "3008" }}
                 alt="Exemple de modèle recommandé"
@@ -119,6 +120,25 @@ export default function AccueilPage() {
         </div>
       </section>
 
+      {/* Bande de chiffres clés */}
+      <section className="border-b border-white/10">
+        <div className="container grid grid-cols-2 gap-6 py-10 md:grid-cols-4">
+          {[
+            { chiffre: "36", label: "modèles analysés" },
+            { chiffre: "4", label: "modes de financement comparés" },
+            { chiffre: "100%", label: "indépendant" },
+            { chiffre: "0 €", label: "gratuit, sans engagement" },
+          ].map((s) => (
+            <div key={s.label} className="text-center">
+              <p className="font-display text-3xl font-extrabold text-gradient md:text-4xl">
+                {s.chiffre}
+              </p>
+              <p className="mt-1 text-sm text-muted-foreground">{s.label}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* Méthode en 3 étapes */}
       <section className="container py-20">
         <div className="mx-auto max-w-2xl text-center">
@@ -129,9 +149,9 @@ export default function AccueilPage() {
         </div>
         <div className="mt-12 grid gap-6 md:grid-cols-3">
           {etapes.map((etape) => (
-            <Card key={etape.titre} className="text-center">
+            <Card key={etape.titre} className="card-hover text-center">
               <CardContent className="pt-8">
-                <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-accent text-primary-foreground shadow-lg shadow-primary/30">
                   <etape.icone className="h-7 w-7" />
                 </span>
                 <h3 className="mt-5 text-lg font-semibold">{etape.titre}</h3>
@@ -143,7 +163,8 @@ export default function AccueilPage() {
       </section>
 
       {/* Atouts */}
-      <section className="border-t bg-secondary/30">
+      <section className="relative overflow-hidden border-y border-white/10 bg-card/30">
+        <div className="blob -right-10 top-0 h-72 w-72 bg-primary/15" />
         <div className="container py-20">
           <div className="grid gap-8 md:grid-cols-3">
             {atouts.map((atout) => (
@@ -163,8 +184,10 @@ export default function AccueilPage() {
 
       {/* CTA final */}
       <section className="container py-20">
-        <Card className="overflow-hidden bg-primary text-primary-foreground">
-          <CardContent className="flex flex-col items-center gap-6 p-10 text-center md:p-16">
+        <Card className="relative overflow-hidden border-none bg-gradient-to-br from-primary via-violet-600 to-accent text-primary-foreground">
+          <div className="blob -left-10 -top-10 h-60 w-60 bg-white/20" />
+          <div className="blob -bottom-10 right-0 h-60 w-60 bg-accent/30" />
+          <CardContent className="relative flex flex-col items-center gap-6 p-10 text-center md:p-16">
             <h2 className="max-w-xl text-3xl font-bold">
               Prêt à trouver la voiture faite pour vous ?
             </h2>

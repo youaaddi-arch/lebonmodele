@@ -3,42 +3,42 @@
 @tailwind utilities;
 
 /*
- * Design system LeBonModèle.
- * Identité moderne, premium et rassurante : fond très clair légèrement bleuté,
- * bleu profond comme couleur d'accent (confiance), vert émeraude pour les
- * signaux positifs. Toutes les couleurs sont en HSL, pilotables par Tailwind.
+ * Design system LeBonModèle — thème SOMBRE premium.
+ * Fond bleu nuit profond (peu de blanc), accent violet électrique et cyan,
+ * pour un rendu moderne, graphique et « tech ». Couleurs en HSL, pilotées
+ * par Tailwind.
  */
 @layer base {
   :root {
-    --background: 210 40% 99%;
-    --foreground: 222 47% 11%;
+    --background: 240 33% 7%;
+    --foreground: 220 30% 96%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
+    --card: 240 28% 11%;
+    --card-foreground: 220 30% 96%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
+    --popover: 240 28% 11%;
+    --popover-foreground: 220 30% 96%;
 
-    /* Bleu profond : couleur d'accent principale */
-    --primary: 221 83% 45%;
-    --primary-foreground: 0 0% 100%;
+    /* Violet électrique : accent principal */
+    --primary: 255 92% 68%;
+    --primary-foreground: 240 33% 7%;
 
-    --secondary: 214 32% 95%;
-    --secondary-foreground: 222 47% 11%;
+    --secondary: 240 22% 17%;
+    --secondary-foreground: 220 30% 96%;
 
-    --muted: 214 32% 95%;
-    --muted-foreground: 215 16% 42%;
+    --muted: 240 20% 15%;
+    --muted-foreground: 232 16% 64%;
 
-    /* Vert émeraude pour les signaux positifs (recommandation, validation) */
-    --accent: 158 64% 38%;
-    --accent-foreground: 0 0% 100%;
+    /* Cyan : signaux positifs / recommandations */
+    --accent: 180 84% 50%;
+    --accent-foreground: 240 33% 7%;
 
-    --destructive: 0 72% 51%;
+    --destructive: 0 75% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 214 25% 89%;
-    --input: 214 25% 89%;
-    --ring: 221 83% 45%;
+    --border: 240 18% 20%;
+    --input: 240 18% 22%;
+    --ring: 255 92% 68%;
 
     --radius: 1rem;
   }
@@ -51,13 +51,17 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-feature-settings: "rlig" 1, "calt" 1;
+    /* Lueurs colorées d'ambiance en fond de page */
+    background-image:
+      radial-gradient(40rem 40rem at 85% -10%, hsl(255 92% 68% / 0.16), transparent 60%),
+      radial-gradient(36rem 36rem at -10% 10%, hsl(180 84% 50% / 0.12), transparent 60%);
+    background-attachment: fixed;
   }
   h1, h2, h3, h4 {
     @apply font-display tracking-tight;
   }
 }
 
-/* Amélioration de l'accessibilité du focus clavier */
 @layer base {
   :focus-visible {
     @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
@@ -67,21 +71,50 @@
 @layer components {
   /* Texte en dégradé pour les accroches */
   .text-gradient {
-    @apply bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-primary via-fuchsia-400 to-accent bg-clip-text text-transparent;
   }
 
-  /* Carte qui réagit subtilement au survol */
+  /* Carte qui réagit au survol */
   .card-hover {
-    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-lg;
+    @apply transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-[0_0_40px_-12px_hsl(var(--primary)/0.5)];
   }
 
-  /* Fond en grille discrète pour les sections héro */
+  /* Effet verre dépoli */
+  .glass {
+    @apply border border-white/10 bg-white/[0.04] backdrop-blur-xl;
+  }
+
+  /* Bordure en dégradé (cartes premium) */
+  .gradient-border {
+    position: relative;
+  }
+  .gradient-border::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, hsl(var(--primary)), transparent 40%, hsl(var(--accent)));
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  /* Tache de couleur floutée décorative */
+  .blob {
+    @apply pointer-events-none absolute rounded-full blur-3xl;
+  }
+
+  /* Grille discrète pour les sections héro */
   .bg-grid {
     background-image:
-      linear-gradient(to right, hsl(var(--border) / 0.6) 1px, transparent 1px),
-      linear-gradient(to bottom, hsl(var(--border) / 0.6) 1px, transparent 1px);
-    background-size: 48px 48px;
-    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 60%, transparent 100%);
-    mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 60%, transparent 100%);
+      linear-gradient(to right, hsl(var(--foreground) / 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, hsl(var(--foreground) / 0.05) 1px, transparent 1px);
+    background-size: 46px 46px;
+    -webkit-mask-image: radial-gradient(ellipse 75% 65% at 50% 0%, #000 55%, transparent 100%);
+    mask-image: radial-gradient(ellipse 75% 65% at 50% 0%, #000 55%, transparent 100%);
   }
 }
