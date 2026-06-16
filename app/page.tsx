@@ -60,26 +60,26 @@ export default function AccueilPage() {
 
   return (
     <>
-      {/* Héro clair : silhouettes de voitures discrètes en fond */}
-      <section className="relative overflow-hidden border-b border-border bg-secondary/40">
+      {/* Héro sombre : ancre visuelle, silhouettes discrètes en fond */}
+      <section className="relative overflow-hidden border-b border-border bg-[#0d1117] text-white">
         {/* Fond : silhouettes (sans filigrane) */}
-        <div className="pointer-events-none absolute inset-0 flex items-end justify-center gap-2 opacity-[0.06]">
-          <CarSilhouette className="hidden h-[42%] w-auto text-foreground sm:block" />
-          <CarSilhouette className="h-[52%] w-auto text-foreground" />
-          <CarSilhouette className="hidden h-[42%] w-auto text-foreground sm:block" />
+        <div className="pointer-events-none absolute inset-0 flex items-end justify-center gap-2 opacity-[0.07]">
+          <CarSilhouette className="hidden h-[42%] w-auto text-white sm:block" />
+          <CarSilhouette className="h-[52%] w-auto text-white" />
+          <CarSilhouette className="hidden h-[42%] w-auto text-white sm:block" />
         </div>
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-background/40 via-transparent to-background" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_50%_30%,hsl(158_72%_30%/0.18),transparent_70%)]" />
 
         <div className="container relative py-20 text-center md:py-28">
-          <p className="eyebrow flex items-center justify-center gap-2 text-primary">
-            <span className="h-px w-8 bg-primary" />
+          <p className="eyebrow flex items-center justify-center gap-2 text-accent">
+            <span className="h-px w-8 bg-accent" />
             Votre voiture idéale, selon vous
           </p>
           <h1 className="mx-auto mt-6 max-w-3xl text-4xl font-bold leading-[1.05] md:text-6xl">
             Trouvez la voiture{" "}
             <span className="text-gradient">qu'il vous faut vraiment.</span>
           </h1>
-          <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
+          <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-white/70">
             Dites-nous vos besoins, votre budget et les modèles que vous aimez :
             on vous trouve les voitures faites pour vous. Et, en bonus, le
             meilleur moyen de les financer — sans jargon, sans rien vous vendre.
@@ -91,11 +91,11 @@ export default function AccueilPage() {
                 <ArrowRight className="h-5 w-5" />
               </Link>
             </Button>
-            <Button asChild size="lg" variant="outline">
+            <Button asChild size="lg" variant="outline" className="border-white/30 bg-transparent text-white hover:bg-white/10 hover:text-white">
               <Link href="/immatriculation">Scanner une plaque</Link>
             </Button>
           </div>
-          <p className="mt-5 text-sm text-muted-foreground">
+          <p className="mt-5 text-sm text-white/60">
             Gratuit · Sans engagement · Environ 3 minutes
           </p>
         </div>
@@ -167,15 +167,15 @@ export default function AccueilPage() {
         </div>
       </section>
 
-      {/* Section financement — bande contrastée */}
-      <section className="border-y border-border bg-card">
+      {/* Section financement — bande sombre contrastée */}
+      <section className="border-y border-border bg-[#0d1117] text-white">
         <div className="container grid items-center gap-12 py-20 md:py-28 lg:grid-cols-2">
           <div>
-            <p className="eyebrow text-primary">Comptant · Crédit · LOA · LLD</p>
+            <p className="eyebrow text-accent">Comptant · Crédit · LOA · LLD</p>
             <h2 className="mt-4 text-4xl font-bold md:text-5xl">
               Le bon modèle ne suffit pas. Le bon financement change tout.
             </h2>
-            <p className="mt-6 max-w-xl text-lg text-muted-foreground">
+            <p className="mt-6 max-w-xl text-lg text-white/70">
               Selon la durée pendant laquelle vous gardez la voiture, votre
               apport et votre profil, l'écart entre acheter et louer se chiffre
               en milliers d'euros. Nous comparons les quatre modes côte à côte,
@@ -256,18 +256,19 @@ export default function AccueilPage() {
         </div>
       </section>
 
-      {/* CTA final */}
-      <section className="container pb-24">
-        <div className="overflow-hidden rounded-2xl border border-border bg-card">
-          <div className="flex flex-col items-center gap-6 px-6 py-16 text-center md:py-20">
+      {/* CTA final — bande sombre */}
+      <section className="container pb-24 pt-4">
+        <div className="relative overflow-hidden rounded-2xl bg-[#0d1117] text-white">
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_120%_at_50%_0%,hsl(158_72%_30%/0.25),transparent_70%)]" />
+          <div className="relative flex flex-col items-center gap-6 px-6 py-16 text-center md:py-20">
             <h2 className="max-w-2xl text-4xl font-bold md:text-5xl">
               Prêt à trouver la voiture faite pour vous ?
             </h2>
-            <p className="max-w-xl text-lg text-muted-foreground">
-              Quelques questions suffisent. Vous obtenez une short-list de
-              modèles et une comparaison de financement personnalisée.
+            <p className="max-w-xl text-lg text-white/70">
+              Dites-nous vos besoins : on vous trouve les voitures idéales, et le
+              meilleur financement en bonus.
             </p>
-            <Button asChild size="lg">
+            <Button asChild size="lg" variant="accent">
               <Link href="/questionnaire">
                 Trouver ma voiture idéale
                 <ArrowRight className="h-5 w-5" />
