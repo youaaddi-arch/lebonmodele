@@ -33,8 +33,9 @@ export async function POST(request: Request) {
       {
         erreur:
           "Aucune fiche trouvée pour cette plaque. La base de démonstration ne " +
-          "contient que la plaque GW-279-AF. Connectez une API de plaque officielle " +
-          "(variable PLAQUE_API_KEY) pour des résultats réels.",
+          "contient que la plaque GW-279-AF. Pour des résultats réels sur toutes " +
+          "les plaques, configurez REGCHECK_USERNAME (compte immatriculationapi.com) " +
+          "ou PLAQUE_API_KEY côté serveur, puis redéployez.",
       },
       { status: 404 },
     );
