@@ -15,32 +15,32 @@ export default function ImmatriculationPage() {
   return (
     <>
       {/* Bannière : grille en transparence sur fond image (voiture) */}
-      <section className="relative overflow-hidden bg-foreground text-background">
+      <section className="relative overflow-hidden border-b border-border bg-card">
         {/* Fond image (voiture) en filigrane */}
         <div
-          className="pointer-events-none absolute inset-0 opacity-20"
+          className="pointer-events-none absolute inset-0 opacity-25"
           style={{
             backgroundImage:
-              "url(https://cdn.imagin.studio/getImage?customer=hrjavascript-mastery&make=peugeot&modelFamily=208&angle=23&zoomType=fullscreen&fileType=png)",
+              "url(https://cdn.imagin.studio/getImage?customer=hrjavascript-mastery&make=peugeot&modelFamily=3008&angle=23&zoomType=fullscreen&fileType=png)",
             backgroundRepeat: "no-repeat",
             backgroundPosition: "right center",
             backgroundSize: "contain",
           }}
         />
         {/* Grille en transparence */}
-        <div className="pointer-events-none absolute inset-0 bg-grid-light opacity-70" />
+        <div className="pointer-events-none absolute inset-0 bg-grid-light opacity-60" />
         {/* Voile dégradé pour la lisibilité */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-foreground via-foreground/90 to-transparent" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-card via-card/90 to-transparent" />
 
         <div className="container relative py-16 md:py-24">
-          <p className="eyebrow flex items-center gap-2 text-background/70">
+          <p className="eyebrow flex items-center gap-2 text-primary">
             <ScanLine className="h-4 w-4" />
             Scanner de plaque
           </p>
-          <h1 className="mt-4 max-w-2xl text-4xl font-extrabold md:text-5xl">
+          <h1 className="mt-4 max-w-2xl text-4xl font-bold md:text-5xl">
             Une plaque. Toute la fiche du véhicule.
           </h1>
-          <p className="mt-4 max-w-xl text-lg text-background/70">
+          <p className="mt-4 max-w-xl text-lg text-muted-foreground">
             Marque, modèle, version, énergie, Crit'Air, puissance, performances,
             VIN, norme euro… Saisissez une immatriculation et obtenez l'essentiel
             en un instant.

@@ -14,7 +14,17 @@ import { ScanLine } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { VehiculeImage } from "@/components/ui/vehicule-image";
+import { urlImageVehicule } from "@/lib/vehicule-image";
 import { PlaqueScanner } from "@/components/immatriculation/plaque-scanner";
+
+/** SUV grand public 2025 affichés en fond de la bannière d'accueil. */
+const SUV_2025 = [
+  { id: "dacia-duster", marque: "Dacia", modele: "Duster" },
+  { id: "peugeot-3008", marque: "Peugeot", modele: "3008" },
+  { id: "tesla-model-y", marque: "Tesla", modele: "Model Y" },
+  { id: "renault-austral", marque: "Renault", modele: "Austral" },
+  { id: "volkswagen-tiguan", marque: "Volkswagen", modele: "Tiguan" },
+];
 
 /** Page d'accueil : proposition de valeur, méthode en 3 étapes, CTA. */
 export default function AccueilPage() {
@@ -59,26 +69,43 @@ export default function AccueilPage() {
 
   return (
     <>
-      {/* Section héro */}
-      <section className="border-b border-border">
-        <div className="container grid items-center gap-12 py-16 md:py-24 lg:grid-cols-2">
-          <div>
-            <p className="eyebrow flex items-center gap-2">
-              <span className="h-px w-8 bg-accent" />
+      {/* Héro : banderole noire transparente sur fond de SUV grand public 2025 */}
+      <section className="relative overflow-hidden border-b border-border bg-[#0E0F12]">
+        {/* Fond : modèles SUV 2025 */}
+        <div className="pointer-events-none absolute inset-0 flex items-end justify-center">
+          {SUV_2025.map((v) => (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              key={v.id}
+              src={urlImageVehicule(v, { angle: "23" })}
+              alt=""
+              aria-hidden="true"
+              className="h-[48%] w-auto max-w-[42%] -mx-6 object-contain opacity-[0.28] drop-shadow-2xl md:h-[58%] md:opacity-40"
+            />
+          ))}
+        </div>
+        <div className="pointer-events-none absolute inset-0 bg-grid-light opacity-60" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0E0F12] via-[#0E0F12]/80 to-[#0E0F12]/40" />
+
+        <div className="container relative py-20 md:py-28">
+          {/* Banderole noire transparente */}
+          <div className="mx-auto max-w-3xl rounded-2xl border border-white/10 bg-black/45 p-8 text-center shadow-2xl backdrop-blur-md md:p-12">
+            <p className="eyebrow flex items-center justify-center gap-2 text-primary">
+              <span className="h-px w-8 bg-primary" />
               Le conseil auto, enfin clair
             </p>
-            <h1 className="mt-6 text-5xl font-extrabold leading-[1.05] md:text-6xl">
+            <h1 className="mt-6 text-4xl font-bold leading-[1.05] md:text-6xl">
               Trouvez la bonne voiture.
               <br />
-              <span className="text-muted-foreground">Vérifiez avant d'acheter.</span>
+              <span className="text-gradient">Vérifiez avant d'acheter.</span>
             </h1>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
+            <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
               Que vous n'y connaissiez rien ou que vous soyez passionné,
               LeBonModèle vous dit quel modèle vous correspond, ce qu'il vaut
-              vraiment — fiabilité, points faibles, cote — et comment le financer
-              au mieux. En clair, sans jargon, et sans rien vous vendre.
+              vraiment et comment le financer au mieux — sans jargon, sans rien
+              vous vendre.
             </p>
-            <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+            <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
               <Button asChild size="lg">
                 <Link href="/questionnaire">
                   Trouver ma voiture
@@ -86,66 +113,43 @@ export default function AccueilPage() {
                 </Link>
               </Button>
               <Button asChild size="lg" variant="outline">
-                <Link href="/guides/loa-lld-credit-comptant">
-                  Comprendre LOA, LLD & crédit
-                </Link>
+                <Link href="/immatriculation">Scanner une plaque</Link>
               </Button>
             </div>
             <p className="mt-5 text-sm text-muted-foreground">
               Gratuit · Sans engagement · Environ 3 minutes
             </p>
           </div>
-
-          {/* Visuel : voiture mise en avant */}
-          <div className="relative">
-            <VehiculeImage
-              vehicule={{ id: "bmw-serie-3", marque: "BMW", modele: "Série 3" }}
-              alt="Exemple de modèle recommandé"
-              className="aspect-[4/3] w-full"
-            />
-            <Card className="absolute bottom-4 left-4 border-border shadow-xl">
-              <CardContent className="flex items-center gap-4 p-4">
-                <span className="flex h-12 w-12 flex-col items-center justify-center rounded-full bg-primary text-primary-foreground">
-                  <span className="text-base font-bold leading-none">94</span>
-                  <span className="text-[8px] uppercase">/100</span>
-                </span>
-                <div>
-                  <p className="eyebrow">Exemple</p>
-                  <p className="font-display font-semibold">BMW Série 3</p>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
         </div>
       </section>
 
       {/* Bannière scanner de plaque : grille en transparence sur fond image */}
-      <section className="relative overflow-hidden bg-foreground text-background">
+      <section className="relative overflow-hidden border-b border-border bg-card">
         <div
-          className="pointer-events-none absolute inset-0 opacity-20"
+          className="pointer-events-none absolute inset-0 opacity-25"
           style={{
             backgroundImage:
-              "url(https://cdn.imagin.studio/getImage?customer=hrjavascript-mastery&make=peugeot&modelFamily=208&angle=23&zoomType=fullscreen&fileType=png)",
+              "url(https://cdn.imagin.studio/getImage?customer=hrjavascript-mastery&make=peugeot&modelFamily=3008&angle=23&zoomType=fullscreen&fileType=png)",
             backgroundRepeat: "no-repeat",
             backgroundPosition: "right center",
             backgroundSize: "contain",
           }}
         />
-        <div className="pointer-events-none absolute inset-0 bg-grid-light opacity-70" />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-foreground via-foreground/90 to-transparent" />
+        <div className="pointer-events-none absolute inset-0 bg-grid-light opacity-60" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-card via-card/90 to-transparent" />
 
         <div className="container relative grid items-center gap-10 py-16 md:py-20 lg:grid-cols-2">
           <div>
-            <p className="eyebrow flex items-center gap-2 text-background/70">
+            <p className="eyebrow flex items-center gap-2 text-primary">
               <ScanLine className="h-4 w-4" />
               Scanner de plaque
             </p>
-            <h2 className="mt-4 text-3xl font-extrabold md:text-4xl">
+            <h2 className="mt-4 text-3xl font-bold md:text-4xl">
               Déjà une voiture en vue ? Vérifiez-la.
             </h2>
-            <p className="mt-3 max-w-md text-background/70">
-              Saisissez la plaque : marque, version, énergie, Crit'Air,
-              puissance, performances, VIN… toute la fiche technique en un instant.
+            <p className="mt-3 max-w-md text-muted-foreground">
+              Saisissez la plaque : marque, version, énergie, puissance, CO₂,
+              VIN… toute la fiche technique en un instant.
             </p>
           </div>
           <div>
@@ -195,15 +199,15 @@ export default function AccueilPage() {
         </div>
       </section>
 
-      {/* Section sombre — contraste éditorial */}
-      <section className="bg-foreground text-background">
+      {/* Section financement — bande contrastée */}
+      <section className="border-y border-border bg-card">
         <div className="container grid items-center gap-12 py-20 md:py-28 lg:grid-cols-2">
           <div>
-            <p className="eyebrow text-background/60">Comptant · Crédit · LOA · LLD</p>
+            <p className="eyebrow text-primary">Comptant · Crédit · LOA · LLD</p>
             <h2 className="mt-4 text-4xl font-bold md:text-5xl">
               Le bon modèle ne suffit pas. Le bon financement change tout.
             </h2>
-            <p className="mt-6 max-w-xl text-lg text-background/70">
+            <p className="mt-6 max-w-xl text-lg text-muted-foreground">
               Selon la durée pendant laquelle vous gardez la voiture, votre
               apport et votre profil, l'écart entre acheter et louer se chiffre
               en milliers d'euros. Nous comparons les quatre modes côte à côte,
