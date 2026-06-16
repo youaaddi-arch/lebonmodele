@@ -39,6 +39,12 @@ const FICHES_DEMO: Record<string, Omit<FicheVehicule, "exemple">> = {
     prixNeuf: 15450,
     acceleration0a100: 13.5,
     vitesseMax: 163,
+    puissanceFiscaleCv: 4,
+    cylindres: 4,
+    co2: 98,
+    dateMiseCirculation: "13/02/2013",
+    genre: "VP",
+    carrosserie: "Citadine",
     vin: "VF3CC8HR0CT124018",
     tvv: "CC8HR0",
     normeEuro: "EURO5",
@@ -212,6 +218,25 @@ function kwVersCh(kw?: string | number): number | undefined {
   return n ? Math.round(n * 1.35962) : undefined;
 }
 
+/** Retourne le plus long texte non vide parmi les candidats. */
+function meilleurTexte(...candidats: (string | undefined)[]): string | undefined {
+  return candidats
+    .filter((c): c is string => Boolean(c && c.trim()))
+    .sort((a, b) => b.length - a.length)[0];
+}
+
+/** Formate une date RegCheck (JJMMAAAA ou AAAA-MM-JJ) en JJ/MM/AAAA. */
+function formaterDate(ddmmyyyy?: string, iso?: string): string | undefined {
+  if (ddmmyyyy && /^\d{8}$/.test(ddmmyyyy)) {
+    return `${ddmmyyyy.slice(0, 2)}/${ddmmyyyy.slice(2, 4)}/${ddmmyyyy.slice(4)}`;
+  }
+  if (iso && /^\d{4}-\d{2}-\d{2}$/.test(iso)) {
+    const [a, m, j] = iso.split("-");
+    return `${j}/${m}/${a}`;
+  }
+  return undefined;
+}
+
 function mapRegCheck(plaque: string, vehicleJson: Record<string, unknown>): FicheVehicule | null {
   const ed = (vehicleJson.ExtendedData ?? {}) as Record<string, unknown>;
   const champTexte = (o: unknown): string | undefined => {
@@ -221,28 +246,48 @@ function mapRegCheck(plaque: string, vehicleJson: Record<string, unknown>): Fich
     }
     return undefined;
   };
+  const s = (v: unknown): string | undefined => (v ? String(v) : undefined);
 
-  const marque = (ed.marque as string) || champTexte(vehicleJson.CarMake);
-  const modele =
-    (ed.libelleModele as string) || (ed.modele as string) || champTexte(vehicleJson.CarModel);
+  // Marque : on retient le libellé le plus complet (évite les "AU" tronqués).
+  const marque = meilleurTexte(
+    champTexte(vehicleJson.MakeDescription),
+    champTexte(vehicleJson.CarMake),
+    s(ed.marque),
+  );
+  const modele = meilleurTexte(
+    champTexte(vehicleJson.ModelDescription),
+    s(ed.libelleModele),
+    s(ed.modele),
+    champTexte(vehicleJson.CarModel),
+  );
   if (!marque && !modele) return null;
 
   return {
     immatriculation: formaterPlaque(plaque),
-    marque: String(marque ?? "—"),
-    modele: String(modele ?? "—"),
-    annee: nombre((vehicleJson.RegistrationYear as string) || (ed.anneeSortie as string)),
-    version: (ed.libVersion as string) || (ed.version as string) || undefined,
-    energie: titre(champTexte(vehicleJson.FuelType) || (ed.carburantVersion as string)),
+    marque: marque ?? "—",
+    modele: modele ?? "—",
+    annee: nombre(s(vehicleJson.RegistrationYear) || s(ed.anneeSortie)),
+    version: s(ed.libVersion) || s(ed.version),
+    energie: titre(champTexte(vehicleJson.FuelType) || s(ed.carburantVersion)),
     critair: undefined,
     puissanceCh: kwVersCh(ed.puissanceDyn as string),
     coupleNm: undefined,
-    boite: mapperBoite((ed.boiteDeVitesse as string) || champTexte(vehicleJson.Transmission)),
+    boite: mapperBoite(s(ed.boiteDeVitesse) || champTexte(vehicleJson.Transmission)),
     prixNeuf: nombre(ed.valeurANeufSRA as string) || undefined,
     acceleration0a100: undefined,
     vitesseMax: undefined,
-    vin: (ed.numSerieMoteur as string) || undefined,
-    tvv: (ed.CNIT as string) || undefined,
+    puissanceFiscaleCv: nombre(ed.puissance as string) || undefined,
+    cylindres: nombre(ed.Cylinders as string) || undefined,
+    co2: nombre(ed.Co2 as string) || undefined,
+    dateMiseCirculation: formaterDate(
+      s(ed.datePremiereMiseCirculation),
+      s(vehicleJson.RegistrationDate),
+    ),
+    genre: s(ed.genre),
+    carrosserie: champTexte(vehicleJson.BodyStyle) || undefined,
+    imageUrl: s(vehicleJson.ImageUrl),
+    vin: s(ed.numSerieMoteur),
+    tvv: s(ed.CNIT),
     normeEuro: undefined,
     exemple: false,
   };
