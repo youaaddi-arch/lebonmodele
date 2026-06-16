@@ -4,6 +4,7 @@ import { ArrowRight, ScanLine } from "lucide-react";
 
 import { PlaqueScanner } from "@/components/immatriculation/plaque-scanner";
 import { Button } from "@/components/ui/button";
+import { CarSilhouette } from "@/components/ui/car-silhouette";
 
 export const metadata: Metadata = {
   title: "Scanner de plaque — identifiez un véhicule en un instant",
@@ -14,23 +15,10 @@ export const metadata: Metadata = {
 export default function ImmatriculationPage() {
   return (
     <>
-      {/* Bannière : grille en transparence sur fond image (voiture) */}
-      <section className="relative overflow-hidden border-b border-border bg-card">
-        {/* Fond image (voiture) en filigrane */}
-        <div
-          className="pointer-events-none absolute inset-0 opacity-25"
-          style={{
-            backgroundImage:
-              "url(https://cdn.imagin.studio/getImage?customer=hrjavascript-mastery&make=peugeot&modelFamily=3008&angle=23&zoomType=fullscreen&fileType=png)",
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "right center",
-            backgroundSize: "contain",
-          }}
-        />
-        {/* Grille en transparence */}
-        <div className="pointer-events-none absolute inset-0 bg-grid-light opacity-60" />
-        {/* Voile dégradé pour la lisibilité */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-card via-card/90 to-transparent" />
+      {/* Bannière scanner */}
+      <section className="relative overflow-hidden border-b border-border bg-secondary/40">
+        <CarSilhouette className="pointer-events-none absolute -right-10 bottom-0 hidden h-3/4 w-auto text-foreground/[0.05] lg:block" />
+        <div className="pointer-events-none absolute inset-0 bg-grid-light opacity-50" />
 
         <div className="container relative py-16 md:py-24">
           <p className="eyebrow flex items-center gap-2 text-primary">
@@ -47,7 +35,7 @@ export default function ImmatriculationPage() {
           </p>
 
           <div className="mt-8 max-w-2xl">
-            <PlaqueScanner variante="sombre" />
+            <PlaqueScanner />
           </div>
         </div>
       </section>

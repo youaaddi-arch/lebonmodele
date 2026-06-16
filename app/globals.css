@@ -3,39 +3,39 @@
 @tailwind utilities;
 
 /*
- * Design system LeBonModèle — style « La Boussole » : fond noir profond,
- * accent vert émeraude, typographie Space Grotesk. Sobre, moderne, premium.
+ * Design system LeBonModèle — thème CLAIR : fonds blancs, beaucoup d'air,
+ * accent vert émeraude, typographie Space Grotesk. Moderne et lumineux.
  */
 @layer base {
   :root {
-    --background: 220 14% 6%;
-    --foreground: 0 0% 98%;
+    --background: 0 0% 100%;
+    --foreground: 222 22% 12%;
 
-    --card: 222 14% 10%;
-    --card-foreground: 0 0% 98%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 22% 12%;
 
-    --popover: 222 14% 10%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 22% 12%;
 
-    /* Vert émeraude : couleur d'accent principale */
-    --primary: 160 84% 39%;
-    --primary-foreground: 0 0% 4%;
+    /* Vert émeraude profond : boutons et éléments forts */
+    --primary: 158 72% 30%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 220 12% 15%;
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 160 30% 96%;
+    --secondary-foreground: 222 22% 12%;
 
-    --muted: 220 12% 13%;
-    --muted-foreground: 220 9% 64%;
+    --muted: 220 16% 96%;
+    --muted-foreground: 220 10% 40%;
 
-    --accent: 160 84% 44%;
-    --accent-foreground: 0 0% 4%;
+    --accent: 158 72% 34%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 72% 55%;
+    --destructive: 0 72% 48%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 10% 20%;
-    --input: 220 10% 22%;
-    --ring: 160 84% 44%;
+    --border: 220 13% 90%;
+    --input: 220 13% 88%;
+    --ring: 158 72% 30%;
 
     --radius: 0.625rem;
   }
@@ -68,7 +68,7 @@
 
   /* Carte au survol */
   .card-hover {
-    @apply transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-[0_0_40px_-12px_hsl(var(--primary)/0.45)];
+    @apply transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-lg;
   }
 
   /* Filet fin */
@@ -81,11 +81,11 @@
     @apply bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent;
   }
 
-  /* Grille en transparence (lignes claires) pour bannières sur fond sombre */
+  /* Grille discrète (lignes sombres) pour fonds clairs */
   .bg-grid-light {
     background-image:
-      linear-gradient(to right, rgb(255 255 255 / 0.06) 1px, transparent 1px),
-      linear-gradient(to bottom, rgb(255 255 255 / 0.06) 1px, transparent 1px);
+      linear-gradient(to right, rgb(0 0 0 / 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(0 0 0 / 0.05) 1px, transparent 1px);
     background-size: 44px 44px;
   }
 }
