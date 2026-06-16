@@ -41,11 +41,11 @@ export default async function FichePlaquePage({ params }: Params) {
           <FicheComplete fiche={fiche} />
 
           {/* Passerelle vers le conseil */}
-          <Card className="mt-10 bg-foreground text-background">
+          <Card className="mt-10 bg-card">
             <CardContent className="flex flex-col items-center gap-4 p-8 text-center md:flex-row md:justify-between md:text-left">
               <div>
                 <h2 className="font-display text-xl font-bold">Vous envisagez d'acheter ce type de véhicule ?</h2>
-                <p className="mt-1 text-background/70">
+                <p className="mt-1 text-muted-foreground">
                   Découvrez s'il vous correspond et le meilleur mode de financement.
                 </p>
               </div>

@@ -3,44 +3,41 @@
 @tailwind utilities;
 
 /*
- * Design system LeBonModèle — élégance premium, inspiration automobile haut
- * de gamme (façon Mercedes-Benz) : monochrome noir / blanc / gris, beaucoup
- * d'espace, typographie soignée, et un accent (bleu pétrole) employé avec
- * parcimonie. Couleurs en HSL, pilotées par Tailwind.
+ * Design system LeBonModèle — style « La Boussole » : fond noir profond,
+ * accent vert émeraude, typographie Space Grotesk. Sobre, moderne, premium.
  */
 @layer base {
   :root {
-    --background: 0 0% 98%;
-    --foreground: 0 0% 8%;
+    --background: 220 14% 6%;
+    --foreground: 0 0% 98%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 8%;
+    --card: 222 14% 10%;
+    --card-foreground: 0 0% 98%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 8%;
+    --popover: 222 14% 10%;
+    --popover-foreground: 0 0% 98%;
 
-    /* Noir profond : boutons et éléments forts (style premium) */
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 100%;
+    /* Vert émeraude : couleur d'accent principale */
+    --primary: 160 84% 39%;
+    --primary-foreground: 0 0% 4%;
 
-    --secondary: 0 0% 95%;
-    --secondary-foreground: 0 0% 9%;
+    --secondary: 220 12% 15%;
+    --secondary-foreground: 0 0% 98%;
 
-    --muted: 0 0% 95%;
-    --muted-foreground: 0 0% 42%;
+    --muted: 220 12% 13%;
+    --muted-foreground: 220 9% 64%;
 
-    /* Bleu pétrole : accent discret (liens, détails) */
-    --accent: 196 84% 35%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 160 84% 44%;
+    --accent-foreground: 0 0% 4%;
 
-    --destructive: 0 72% 48%;
+    --destructive: 0 72% 55%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 88%;
-    --input: 0 0% 86%;
-    --ring: 0 0% 9%;
+    --border: 220 10% 20%;
+    --input: 220 10% 22%;
+    --ring: 160 84% 44%;
 
-    --radius: 0.5rem;
+    --radius: 0.625rem;
   }
 }
 
@@ -64,26 +61,31 @@
 }
 
 @layer components {
-  /* Petit intitulé en capitales espacées (style éditorial premium) */
+  /* Petit intitulé en capitales espacées */
   .eyebrow {
     @apply text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground;
   }
 
-  /* Carte au survol sobre */
+  /* Carte au survol */
   .card-hover {
-    @apply transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl;
+    @apply transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-[0_0_40px_-12px_hsl(var(--primary)/0.45)];
   }
 
-  /* Filet fin pour séparer les sections */
+  /* Filet fin */
   .hairline {
     @apply border-t border-border;
+  }
+
+  /* Texte en dégradé vert */
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent;
   }
 
   /* Grille en transparence (lignes claires) pour bannières sur fond sombre */
   .bg-grid-light {
     background-image:
-      linear-gradient(to right, rgb(255 255 255 / 0.08) 1px, transparent 1px),
-      linear-gradient(to bottom, rgb(255 255 255 / 0.08) 1px, transparent 1px);
+      linear-gradient(to right, rgb(255 255 255 / 0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(255 255 255 / 0.06) 1px, transparent 1px);
     background-size: 44px 44px;
   }
 }

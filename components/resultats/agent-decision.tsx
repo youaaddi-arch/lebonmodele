@@ -50,7 +50,7 @@ export function AgentDecision({ profil }: { profil: ProfilUtilisateur }) {
     <Card className="border-foreground/15 bg-secondary/40">
       <CardContent className="space-y-4 p-6">
         <div className="flex items-center gap-2">
-          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-foreground text-background">
+          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground">
             <Workflow className="h-4 w-4" />
           </span>
           <div>

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Archivo } from "next/font/google";
+import { Inter, Space_Grotesk } from "next/font/google";
 
 import "./globals.css";
 import { Header } from "@/components/layout/header";
@@ -7,11 +7,11 @@ import { Footer } from "@/components/layout/footer";
 import { CookieBanner } from "@/components/cookie-banner";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
-const archivo = Archivo({
+const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   variable: "--font-display",
   display: "swap",
-  weight: ["600", "700", "800"],
+  weight: ["500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" className={`${inter.variable} ${archivo.variable}`}>
+    <html lang="fr" className={`${inter.variable} ${spaceGrotesk.variable}`}>
       <body className="flex min-h-screen flex-col font-sans">
         <Header />
         <main className="flex-1">{children}</main>
