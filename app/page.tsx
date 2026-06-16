@@ -14,17 +14,8 @@ import { ScanLine } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { VehiculeImage } from "@/components/ui/vehicule-image";
-import { urlImageVehicule } from "@/lib/vehicule-image";
+import { CarSilhouette } from "@/components/ui/car-silhouette";
 import { PlaqueScanner } from "@/components/immatriculation/plaque-scanner";
-
-/** Modèles grand public 2025 affichés en fond de la bannière d'accueil. */
-const SUV_2025 = [
-  { id: "renault-clio", marque: "Renault", modele: "Clio" },
-  { id: "toyota-chr", marque: "Toyota", modele: "C-HR" },
-  { id: "peugeot-3008", marque: "Peugeot", modele: "3008" },
-  { id: "mazda-cx5", marque: "Mazda", modele: "CX-5" },
-  { id: "tesla-model-y", marque: "Tesla", modele: "Model Y" },
-];
 
 /** Page d'accueil : proposition de valeur, méthode en 3 étapes, CTA. */
 export default function AccueilPage() {
@@ -69,73 +60,51 @@ export default function AccueilPage() {
 
   return (
     <>
-      {/* Héro : banderole noire transparente sur fond de SUV grand public 2025 */}
-      <section className="relative overflow-hidden border-b border-border bg-[#0E0F12]">
-        {/* Fond : modèles SUV 2025 */}
-        <div className="pointer-events-none absolute inset-0 flex items-end justify-center">
-          {SUV_2025.map((v) => (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              key={v.id}
-              src={urlImageVehicule(v, { angle: "23" })}
-              alt=""
-              aria-hidden="true"
-              className="h-[48%] w-auto max-w-[42%] -mx-6 object-contain opacity-[0.28] drop-shadow-2xl md:h-[58%] md:opacity-40"
-            />
-          ))}
+      {/* Héro clair : silhouettes de voitures discrètes en fond */}
+      <section className="relative overflow-hidden border-b border-border bg-secondary/40">
+        {/* Fond : silhouettes (sans filigrane) */}
+        <div className="pointer-events-none absolute inset-0 flex items-end justify-center gap-2 opacity-[0.06]">
+          <CarSilhouette className="hidden h-[42%] w-auto text-foreground sm:block" />
+          <CarSilhouette className="h-[52%] w-auto text-foreground" />
+          <CarSilhouette className="hidden h-[42%] w-auto text-foreground sm:block" />
         </div>
-        <div className="pointer-events-none absolute inset-0 bg-grid-light opacity-60" />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0E0F12] via-[#0E0F12]/80 to-[#0E0F12]/40" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-background/40 via-transparent to-background" />
 
-        <div className="container relative py-20 md:py-28">
-          {/* Banderole noire transparente */}
-          <div className="mx-auto max-w-3xl rounded-2xl border border-white/10 bg-black/45 p-8 text-center shadow-2xl backdrop-blur-md md:p-12">
-            <p className="eyebrow flex items-center justify-center gap-2 text-primary">
-              <span className="h-px w-8 bg-primary" />
-              Votre voiture idéale, selon vous
-            </p>
-            <h1 className="mt-6 text-4xl font-bold leading-[1.05] md:text-6xl">
-              Trouvez la voiture
-              <br />
-              <span className="text-gradient">qu'il vous faut vraiment.</span>
-            </h1>
-            <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
-              Dites-nous vos besoins, votre budget et les modèles que vous aimez :
-              on vous trouve les voitures faites pour vous. Et, en bonus, le
-              meilleur moyen de les financer — sans jargon, sans rien vous vendre.
-            </p>
-            <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
-              <Button asChild size="lg">
-                <Link href="/questionnaire">
-                  Trouver ma voiture idéale
-                  <ArrowRight className="h-5 w-5" />
-                </Link>
-              </Button>
-              <Button asChild size="lg" variant="outline">
-                <Link href="/immatriculation">Scanner une plaque</Link>
-              </Button>
-            </div>
-            <p className="mt-5 text-sm text-muted-foreground">
-              Gratuit · Sans engagement · Environ 3 minutes
-            </p>
+        <div className="container relative py-20 text-center md:py-28">
+          <p className="eyebrow flex items-center justify-center gap-2 text-primary">
+            <span className="h-px w-8 bg-primary" />
+            Votre voiture idéale, selon vous
+          </p>
+          <h1 className="mx-auto mt-6 max-w-3xl text-4xl font-bold leading-[1.05] md:text-6xl">
+            Trouvez la voiture{" "}
+            <span className="text-gradient">qu'il vous faut vraiment.</span>
+          </h1>
+          <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
+            Dites-nous vos besoins, votre budget et les modèles que vous aimez :
+            on vous trouve les voitures faites pour vous. Et, en bonus, le
+            meilleur moyen de les financer — sans jargon, sans rien vous vendre.
+          </p>
+          <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
+            <Button asChild size="lg">
+              <Link href="/questionnaire">
+                Trouver ma voiture idéale
+                <ArrowRight className="h-5 w-5" />
+              </Link>
+            </Button>
+            <Button asChild size="lg" variant="outline">
+              <Link href="/immatriculation">Scanner une plaque</Link>
+            </Button>
           </div>
+          <p className="mt-5 text-sm text-muted-foreground">
+            Gratuit · Sans engagement · Environ 3 minutes
+          </p>
         </div>
       </section>
 
-      {/* Bannière scanner de plaque : grille en transparence sur fond image */}
-      <section className="relative overflow-hidden border-b border-border bg-card">
-        <div
-          className="pointer-events-none absolute inset-0 opacity-25"
-          style={{
-            backgroundImage:
-              "url(https://cdn.imagin.studio/getImage?customer=hrjavascript-mastery&make=peugeot&modelFamily=3008&angle=23&zoomType=fullscreen&fileType=png)",
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "right center",
-            backgroundSize: "contain",
-          }}
-        />
-        <div className="pointer-events-none absolute inset-0 bg-grid-light opacity-60" />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-card via-card/90 to-transparent" />
+      {/* Bannière scanner de plaque */}
+      <section className="relative overflow-hidden border-b border-border bg-secondary/40">
+        <CarSilhouette className="pointer-events-none absolute -right-10 bottom-0 hidden h-3/4 w-auto text-foreground/[0.05] lg:block" />
+        <div className="pointer-events-none absolute inset-0 bg-grid-light opacity-50" />
 
         <div className="container relative grid items-center gap-10 py-16 md:py-20 lg:grid-cols-2">
           <div>
@@ -152,7 +121,7 @@ export default function AccueilPage() {
             </p>
           </div>
           <div>
-            <PlaqueScanner variante="sombre" />
+            <PlaqueScanner />
           </div>
         </div>
       </section>

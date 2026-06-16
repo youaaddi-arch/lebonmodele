@@ -14,6 +14,15 @@
 const CUSTOMER =
   process.env.NEXT_PUBLIC_IMAGIN_CUSTOMER?.trim() || "hrjavascript-mastery";
 
+/**
+ * Vrai si une clé imagin propre (payante) est configurée : on affiche alors les
+ * vraies photos. Sinon (clé de démo gratuite, filigranée), on n'affiche PAS les
+ * photos filigranées — on utilise des silhouettes propres à la place.
+ */
+export const imagesReellesActives = Boolean(
+  process.env.NEXT_PUBLIC_IMAGIN_CUSTOMER?.trim(),
+);
+
 /** Retire les accents et met en minuscules pour coller aux clés imagin. */
 function normaliser(valeur: string): string {
   return valeur
